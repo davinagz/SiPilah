@@ -8,16 +8,6 @@ public class ViewController {
 
     @GetMapping("/")
     public String home() {
-        return "admin";
-    }
-
-    @GetMapping("/pengguna")
-    public String pengguna() {
-        return "pengguna";
-    }
-
-    @GetMapping("/petugas")
-    public String petugas() {
-        return "petugas";
+        return "redirect:/index.html";
     }
 }
