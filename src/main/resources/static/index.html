@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIPILAH — Sistem Informasi Pengelolaan Sampah</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --hijau: #2d9e5f;
+        --hijau-muda: #e8f7ef;
+        --hijau-tua: #1a6b3f;
+        --kuning: #f5c842;
+        --bg: #f4faf7;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background: var(--bg);
+        color: #222;
+        scroll-behavior: smooth;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        background: white;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+        padding: 12px 0;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+
+      .navbar-brand {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.7rem;
+        color: var(--hijau-tua) !important;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-link {
+        font-weight: 600;
+        color: #444 !important;
+        padding: 8px 16px !important;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+
+      .nav-link:hover {
+        background: var(--hijau-muda);
+        color: var(--hijau-tua) !important;
+      }
+
+      .btn-login {
+        border: 2px solid var(--hijau);
+        color: var(--hijau);
+        background: white;
+        padding: 8px 22px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-family: "Nunito", sans-serif;
+        transition: all 0.2s;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .btn-login:hover {
+        background: var(--hijau-muda);
+        color: var(--hijau-tua);
+      }
+
+      .btn-daftar {
+        background: var(--hijau);
+        color: white;
+        padding: 8px 22px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-family: "Nunito", sans-serif;
+        border: none;
+        transition: all 0.2s;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .btn-daftar:hover {
+        background: var(--hijau-tua);
+        color: white;
+      }
+
+      /* HERO */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--hijau-tua) 0%,
+          var(--hijau) 60%,
+          #4cbb7f 100%
+        );
+        min-height: 88vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -80px;
+        right: -80px;
+        width: 400px;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        bottom: -100px;
+        left: -60px;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 50%;
+      }
+
+      .hero-title {
+        font-family: "Fredoka One", cursive;
+        font-size: 3.6rem;
+        color: white;
+        line-height: 1.1;
+        margin-bottom: 20px;
+      }
+
+      .hero-title span {
+        color: var(--kuning);
+      }
+
+      .hero-desc {
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 36px;
+        max-width: 480px;
+      }
+
+      .btn-hero-utama {
+        background: var(--kuning);
+        color: #1a1a1a;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        font-family: "Nunito", sans-serif;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-hero-utama:hover {
+        background: #e6b800;
+        color: #111;
+        transform: translateY(-2px);
+      }
+
+      .btn-hero-outline {
+        background: transparent;
+        color: white;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        font-family: "Nunito", sans-serif;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-hero-outline:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border-color: white;
+      }
+
+      .hero-illustration {
+        font-size: 11rem;
+        text-align: center;
+        line-height: 1;
+        filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+      }
+
+      /* STATS */
+      .stats-section {
+        background: white;
+        padding: 40px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 16px;
+      }
+
+      .stat-item h3 {
+        font-family: "Fredoka One", cursive;
+        font-size: 2.4rem;
+        color: var(--hijau-tua);
+        margin: 0;
+      }
+
+      .stat-item p {
+        font-size: 0.88rem;
+        color: #6c757d;
+        font-weight: 600;
+        margin: 4px 0 0;
+      }
+
+      /* FITUR */
+      .section-title {
+        font-family: "Fredoka One", cursive;
+        font-size: 2.2rem;
+        color: var(--hijau-tua);
+        margin-bottom: 8px;
+      }
+
+      .section-sub {
+        color: #6c757d;
+        font-size: 0.95rem;
+        margin-bottom: 48px;
+      }
+
+      .fitur-card {
+        background: white;
+        border-radius: 20px;
+        padding: 32px 24px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        height: 100%;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        border: 2px solid transparent;
+      }
+
+      .fitur-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(45, 158, 95, 0.12);
+        border-color: var(--hijau-muda);
+      }
+
+      .fitur-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+      }
+
+      .fitur-card h5 {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.2rem;
+        color: var(--hijau-tua);
+        margin-bottom: 10px;
+      }
+
+      .fitur-card p {
+        font-size: 0.88rem;
+        color: #6c757d;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      /* CARA KERJA */
+      .cara-kerja {
+        background: linear-gradient(135deg, var(--hijau-tua), var(--hijau));
+        padding: 80px 0;
+      }
+
+      .step-card {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        height: 100%;
+      }
+
+      .step-number {
+        width: 48px;
+        height: 48px;
+        background: var(--kuning);
+        color: #333;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.4rem;
+        margin: 0 auto 16px;
+      }
+
+      .step-card h5 {
+        font-family: "Fredoka One", cursive;
+        color: white;
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+      }
+
+      .step-card p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.85rem;
+        margin: 0;
+      }
+
+      /* ROLE */
+      .role-card {
+        background: white;
+        border-radius: 20px;
+        padding: 36px 28px;
+        text-align: center;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        height: 100%;
+        transition: transform 0.2s;
+      }
+
+      .role-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .role-icon {
+        font-size: 3rem;
+        margin-bottom: 16px;
+        display: block;
+      }
+
+      .role-card h4 {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+      }
+
+      .role-card p {
+        font-size: 0.88rem;
+        color: #6c757d;
+        margin-bottom: 20px;
+      }
+
+      .btn-role {
+        padding: 10px 24px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.88rem;
+        text-decoration: none;
+        font-family: "Nunito", sans-serif;
+        transition: all 0.2s;
+        display: inline-block;
+      }
+
+      /* CTA */
+      .cta-section {
+        background: var(--hijau-muda);
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      .cta-section h2 {
+        font-family: "Fredoka One", cursive;
+        font-size: 2.4rem;
+        color: var(--hijau-tua);
+        margin-bottom: 12px;
+      }
+
+      .cta-section p {
+        color: #6c757d;
+        margin-bottom: 32px;
+        font-size: 0.95rem;
+      }
+
+      /* FOOTER */
+      footer {
+        background: var(--hijau-tua);
+        color: rgba(255, 255, 255, 0.8);
+        padding: 32px 0;
+        text-align: center;
+        font-size: 0.88rem;
+      }
+
+      footer strong {
+        color: white;
+        font-family: "Fredoka One", cursive;
+        font-size: 1rem;
+      }
+
+      /* MODAL LOGIN */
+      .modal-content {
+        border-radius: 20px;
+        border: none;
+      }
+      .modal-header {
+        background: linear-gradient(135deg, var(--hijau-tua), var(--hijau));
+        color: white;
+        border-radius: 20px 20px 0 0;
+        padding: 20px 28px;
+      }
+      .modal-title {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.4rem;
+      }
+      .btn-close {
+        filter: invert(1);
+      }
+      .form-label {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--hijau-tua);
+      }
+      .form-control {
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        font-family: "Nunito", sans-serif;
+        padding: 10px 14px;
+      }
+      .form-control:focus {
+        border-color: var(--hijau);
+        box-shadow: 0 0 0 3px rgba(45, 158, 95, 0.15);
+      }
+      .btn-masuk {
+        background: var(--hijau);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 800;
+        width: 100%;
+        font-family: "Nunito", sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .btn-masuk:hover {
+        background: var(--hijau-tua);
+      }
+      .alert-modal {
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-up {
+        animation: fadeUp 0.6s ease both;
+      }
+      .delay-1 {
+        animation-delay: 0.15s;
+      }
+      .delay-2 {
+        animation-delay: 0.3s;
+      }
+      .delay-3 {
+        animation-delay: 0.45s;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="#"> 🌿 SIPILAH </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav me-auto ms-4">
+            <li class="nav-item">
+              <a class="nav-link" href="#fitur">Fitur</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#cara-kerja">Cara Kerja</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#role">Pengguna</a>
+            </li>
+          </ul>
+          <div class="d-flex align-items-center gap-2">
+            <a
+              href="#"
+              class="btn-login"
+              data-bs-toggle="modal"
+              data-bs-target="#modalLogin"
+            >
+              <i class="fas fa-sign-in-alt me-1"></i> Masuk
+            </a>
+            <a
+              href="#"
+              class="btn-daftar"
+              data-bs-toggle="modal"
+              data-bs-target="#modalLogin"
+            >
+              <i class="fas fa-user-plus me-1"></i> Daftar
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container position-relative" style="z-index: 1">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6">
+            <div class="hero-badge fade-up">
+              <i class="fas fa-leaf"></i> Kelola Sampah, Jaga Lingkungan
+            </div>
+            <h1 class="hero-title fade-up delay-1">
+              Sistem Informasi<br />Pengelolaan <span>Sampah</span><br />Terpadu
+            </h1>
+            <p class="hero-desc fade-up delay-2">
+              SIPILAH memudahkan warga, petugas, dan admin dalam mengelola
+              sampah secara digital — dari setoran, penjemputan, hingga laporan
+              transaksi.
+            </p>
+            <div class="d-flex flex-wrap gap-3 fade-up delay-3">
+              <a
+                href="#"
+                class="btn-hero-utama"
+                data-bs-toggle="modal"
+                data-bs-target="#modalLogin"
+              >
+                <i class="fas fa-sign-in-alt"></i> Mulai Sekarang
+              </a>
+              <a href="#fitur" class="btn-hero-outline">
+                <i class="fas fa-info-circle"></i> Pelajari Lebih
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-6 text-center fade-up delay-2">
+            <div class="hero-illustration">♻️</div>
+            <div class="mt-3 d-flex justify-content-center gap-3">
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.15);
+                  border-radius: 12px;
+                  padding: 12px 20px;
+                  color: white;
+                  text-align: center;
+                  border: 1px solid rgba(255, 255, 255, 0.2);
+                "
+              >
+                <div
+                  style="
+                    font-family: &quot;Fredoka One&quot;, cursive;
+                    font-size: 1.6rem;
+                  "
+                >
+                  3
+                </div>
+                <div style="font-size: 0.78rem; opacity: 0.85">
+                  Role Pengguna
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.15);
+                  border-radius: 12px;
+                  padding: 12px 20px;
+                  color: white;
+                  text-align: center;
+                  border: 1px solid rgba(255, 255, 255, 0.2);
+                "
+              >
+                <div
+                  style="
+                    font-family: &quot;Fredoka One&quot;, cursive;
+                    font-size: 1.6rem;
+                  "
+                >
+                  GPS
+                </div>
+                <div style="font-size: 0.78rem; opacity: 0.85">
+                  Lokasi Real-time
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(255, 255, 255, 0.15);
+                  border-radius: 12px;
+                  padding: 12px 20px;
+                  color: white;
+                  text-align: center;
+                  border: 1px solid rgba(255, 255, 255, 0.2);
+                "
+              >
+                <div
+                  style="
+                    font-family: &quot;Fredoka One&quot;, cursive;
+                    font-size: 1.6rem;
+                  "
+                >
+                  24/7
+                </div>
+                <div style="font-size: 0.78rem; opacity: 0.85">
+                  Akses Kapanpun
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FITUR -->
+    <section class="py-5 mt-2" id="fitur">
+      <div class="container py-4">
+        <div class="text-center">
+          <h2 class="section-title">Fitur Unggulan</h2>
+          <p class="section-sub">
+            Semua yang kamu butuhkan untuk kelola sampah dengan mudah
+          </p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="fitur-card">
+              <div
+                class="fitur-icon"
+                style="background: #e8f7ef; color: #2d9e5f"
+              >
+                <i class="fas fa-truck"></i>
+              </div>
+              <h5>Minta Penjemputan</h5>
+              <p>
+                Warga bisa request penjemputan sampah langsung dari rumah.
+                Petugas menerima notifikasi real-time beserta lokasi GPS.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="fitur-card">
+              <div
+                class="fitur-icon"
+                style="background: #e3f2fd; color: #1565c0"
+              >
+                <i class="fas fa-recycle"></i>
+              </div>
+              <h5>Catat Transaksi Sampah</h5>
+              <p>
+                Petugas mencatat jenis dan berat sampah yang disetor oleh warga.
+                Data tersimpan rapi dan bisa dilihat kapanpun.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="fitur-card">
+              <div
+                class="fitur-icon"
+                style="background: #fff3e0; color: #f07d3a"
+              >
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <h5>Lacak Lokasi Real-time</h5>
+              <p>
+                Peta interaktif menampilkan lokasi warga yang meminta
+                penjemputan. Petugas bisa langsung navigasi ke lokasi.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="fitur-card">
+              <div
+                class="fitur-icon"
+                style="background: #f3e5f5; color: #6a1b9a"
+              >
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <h5>Dashboard & Statistik</h5>
+              <p>
+                Admin dan petugas dapat melihat ringkasan data warga, transaksi,
+                dan total berat sampah yang telah dikelola.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="fitur-card">
+              <div
+                class="fitur-icon"
+                style="background: #e8f7ef; color: #2d9e5f"
+              >
+                <i class="fas fa-users"></i>
+              </div>
+              <h5>Kelola Warga & Petugas</h5>
+              <p>
+                Admin bisa menambah, memantau, dan menghapus data warga serta
+                petugas dengan mudah melalui dashboard.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="fitur-card">
+              <div
+                class="fitur-icon"
+                style="background: #fdeaea; color: #e74c3c"
+              >
+                <i class="fas fa-history"></i>
+              </div>
+              <h5>Riwayat Lengkap</h5>
+              <p>
+                Semua transaksi dan riwayat penjemputan tersimpan dan dapat
+                diakses oleh warga, petugas, maupun admin.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARA KERJA -->
+    <section class="cara-kerja" id="cara-kerja">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2
+            style="
+              font-family: &quot;Fredoka One&quot;, cursive;
+              font-size: 2.2rem;
+              color: white;
+              margin-bottom: 8px;
+            "
+          >
+            Cara Kerja SIPILAH
+          </h2>
+          <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem">
+            Mudah dan cepat dalam 4 langkah
+          </p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-3">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <h5>Daftar & Masuk</h5>
+              <p>
+                Warga mendaftar ke sistem melalui admin, lalu login dengan email
+                dan password.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <h5>Request Jemputan</h5>
+              <p>
+                Warga menekan tombol request penjemputan, sistem otomatis kirim
+                lokasi GPS ke petugas.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <h5>Petugas OTW</h5>
+              <p>
+                Petugas menerima notifikasi, melihat lokasi di peta, lalu
+                menjemput sampah ke rumah warga.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <h5>Catat & Selesai</h5>
+              <p>
+                Petugas mencatat jenis dan berat sampah. Data langsung masuk ke
+                sistem dan bisa dilihat semua pihak.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KATEGORI SAMPAH -->
+<section class="py-5" id="role">
+  <div class="container py-4">
+    <div class="text-center">
+      <h2 class="section-title">3 Kategori Sampah</h2>
+      <p class="section-sub">
+        Kenali jenis sampah agar proses pemilahan lebih mudah dan ramah lingkungan
+      </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-md-4">
+        <div class="role-card">
+          <span class="role-icon">🍃</span>
+          <h4 style="color:#2d9e5f">Organik</h4>
+          <p>
+            Sampah yang mudah terurai secara alami seperti sisa makanan,
+            daun kering, kulit buah, dan limbah dapur.
+          </p>
+          <a href="#" class="btn-role"
+             style="background:#e8f7ef;color:#2d9e5f">
+            Mudah Terurai →
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="role-card">
+          <span class="role-icon">♻️</span>
+          <h4 style="color:#1565c0">Anorganik</h4>
+          <p>
+            Sampah yang sulit terurai seperti plastik, botol kaca,
+            kaleng, kardus, dan bahan yang bisa didaur ulang.
+          </p>
+          <a href="#" class="btn-role"
+             style="background:#e3f2fd;color:#1565c0">
+            Bisa Didaur Ulang →
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="role-card">
+          <span class="role-icon">⚠️</span>
+          <h4 style="color:#b85c1a">B3</h4>
+          <p>
+            Sampah berbahaya dan beracun seperti baterai bekas,
+            lampu neon, obat kadaluarsa, dan bahan kimia.
+          </p>
+          <a href="#" class="btn-role"
+             style="background:#fff3e0;color:#b85c1a">
+            Perlu Penanganan Khusus →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Siap Mulai Mengelola Sampah?</h2>
+        <p>
+          Bergabung dengan SIPILAH dan wujudkan lingkungan yang lebih bersih
+          bersama!
+        </p>
+        <a
+          href="#"
+          class="btn-hero-utama"
+          data-bs-toggle="modal"
+          data-bs-target="#modalLogin"
+        >
+          <i class="fas fa-sign-in-alt"></i> Masuk Sekarang
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <strong>🌿 SIPILAH</strong>
+        <p class="mt-2 mb-0">
+          Sistem Informasi Pengelolaan Sampah — © 2026. Dibuat untuk lingkungan
+          yang lebih baik.
+        </p>
+      </div>
+    </footer>
+
+    <!-- MODAL LOGIN -->
+    <div class="modal fade" id="modalLogin" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">🌿 Masuk ke SIPILAH</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body p-4">
+            <div id="alert-login"></div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="login-email"
+                placeholder="email@gmail.com"
+              />
+            </div>
+            <div class="mb-4">
+              <label class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="login-password"
+                placeholder="••••••••"
+              />
+            </div>
+            <button class="btn-masuk" onclick="doLogin()">
+              <i class="fas fa-sign-in-alt me-2"></i> Masuk
+            </button>
+            <p
+              class="text-center mt-3 mb-0"
+              style="font-size: 0.83rem; color: #6c757d"
+            >
+              Belum punya akun? Hubungi admin untuk pendaftaran.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      async function doLogin() {
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+        const alertBox = document.getElementById("alert-login");
+
+        if (!email || !password) {
+          alertBox.innerHTML = `<div class="alert alert-warning alert-modal">Isi email dan password dulu!</div>`;
+          return;
+        }
+
+        try {
+          const res = await fetch("http://localhost:8080/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            alertBox.innerHTML = `<div class="alert alert-danger alert-modal">${data.pesan || "Email atau password salah!"}</div>`;
+            return;
+          }
+
+          const role = data.role;
+          if (role === "ADMIN") window.location.href = "/admin.html";
+          else if (role === "PETUGAS") window.location.href = "/petugas.html";
+          else if (role === "PENGGUNA") window.location.href = "/pengguna.html";
+          else
+            alertBox.innerHTML = `<div class="alert alert-danger alert-modal">Role tidak dikenali!</div>`;
+        } catch (e) {
+          alertBox.innerHTML = `<div class="alert alert-danger alert-modal">Tidak bisa konek ke server! Pastikan aplikasi sudah berjalan.</div>`;
+        }
+      }
+
+      document
+        .getElementById("login-password")
+        .addEventListener("keydown", (e) => {
+          if (e.key === "Enter") doLogin();
+        });
+    </script>
+  </body>
+</html>
