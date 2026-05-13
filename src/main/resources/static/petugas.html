@@ -9,119 +9,204 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
-    :root { --oranye: #f07d3a; --oranye-muda: #fff3e0; --oranye-tua: #b85c1a; --hijau: #2d9e5f; --bg: #fffaf5; }
-    body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; }
-    .sidebar { width: 240px; min-height: 100vh; background: linear-gradient(160deg, var(--oranye-tua), var(--oranye)); position: fixed; left: 0; top: 0; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
-    .sidebar-brand { font-family: 'Fredoka One', cursive; font-size: 1.8rem; color: white; padding: 24px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 10px; }
-    .sidebar nav a { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.85); text-decoration: none; padding: 12px 24px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; border-left: 3px solid transparent; }
-    .sidebar nav a:hover, .sidebar nav a.active { background: rgba(255,255,255,0.15); color: white; border-left-color: #fff; }
-    .sidebar nav a i { width: 20px; text-align: center; }
-    .notif-badge { background: #e74c3c; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; margin-left: auto; }
-    .main { margin-left: 240px; padding: 32px; }
+    :root {
+      --hijau: #2d9e5f;
+      --hijau-muda: #e8f7ef;
+      --hijau-tua: #1a6b3f;
+      --kuning: #f5c842;
+      --oranye: #f07d3a;
+      --merah: #e74c3c;
+      --bg: #f4faf7;
+      --sidebar-w: 260px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; background: var(--bg); color: #222; }
+
+    .sidebar {
+      width: var(--sidebar-w); min-height: 100vh;
+      background: var(--hijau-tua); position: fixed; left: 0; top: 0;
+      display: flex; flex-direction: column;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.1); z-index: 100;
+    }
+
+    .sidebar-brand { padding: 28px 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .sidebar-brand .logo { font-family: 'Fredoka One', cursive; font-size: 1.9rem; color: white; display: flex; align-items: center; gap: 8px; }
+    .sidebar-brand .role-tag { display: inline-block; margin-top: 8px; background: var(--oranye); color: white; font-size: 0.7rem; font-weight: 800; padding: 3px 12px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+    .sidebar nav { padding: 16px 0; flex: 1; }
+    .sidebar nav a { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); text-decoration: none; padding: 12px 24px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; border-left: 3px solid transparent; }
+    .sidebar nav a i { width: 18px; text-align: center; font-size: 0.9rem; }
+    .sidebar nav a:hover { color: white; background: rgba(255,255,255,0.08); }
+    .sidebar nav a.active { color: white; background: rgba(255,255,255,0.12); border-left-color: var(--oranye); }
+    .sidebar nav .nav-section { padding: 14px 24px 6px; font-size: 0.68rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+
+    .notif-dot { background: var(--merah); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.65rem; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; margin-left: auto; }
+
+    .sidebar-footer { padding: 18px 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-footer a { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
+    .sidebar-footer a:hover { color: white; }
+
+    .main { margin-left: var(--sidebar-w); padding: 32px 36px; min-height: 100vh; }
+
     .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
-    .topbar h1 { font-family: 'Fredoka One', cursive; font-size: 1.6rem; color: var(--oranye-tua); margin: 0; }
-    .petugas-badge { background: var(--oranye-muda); border: 2px solid var(--oranye); color: var(--oranye-tua); padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
-    .stat-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 16px; transition: transform 0.2s; }
-    .stat-card:hover { transform: translateY(-3px); }
-    .stat-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-    .stat-card h3 { font-family: 'Fredoka One', cursive; font-size: 2rem; margin: 0; line-height: 1; }
-    .stat-card p { margin: 4px 0 0; font-size: 0.82rem; color: #6c757d; font-weight: 600; }
-    .section-card { background: white; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 24px; }
-    .section-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--oranye-muda); }
-    .section-header h5 { font-family: 'Fredoka One', cursive; color: var(--oranye-tua); margin: 0; font-size: 1.1rem; }
-    .btn-tambah { background: var(--oranye); color: white; border: none; padding: 8px 18px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: 'Nunito', sans-serif; }
-    .btn-tambah:hover { background: var(--oranye-tua); }
-    table { width: 100%; }
-    table thead th { background: var(--oranye-muda); color: var(--oranye-tua); font-weight: 700; font-size: 0.82rem; padding: 12px 16px; border: none; }
-    table tbody td { padding: 12px 16px; font-size: 0.88rem; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
-    .badge-kategori { background: #e8f7ef; color: #1a6b3f; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-    .btn-hapus { background: #fdeaea; color: #e74c3c; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
-    .btn-hapus:hover { background: #e74c3c; color: white; }
-    .btn-terima { background: #e8f7ef; color: #1a6b3f; border: none; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
-    .btn-terima:hover { background: #2d9e5f; color: white; }
-    .btn-selesai { background: #e3f2fd; color: #1565c0; border: none; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+    .topbar-left h1 { font-family: 'Fredoka One', cursive; font-size: 1.9rem; color: var(--hijau-tua); margin: 0; }
+    .topbar-left p { font-size: 0.85rem; color: #6c757d; margin: 2px 0 0; }
+    .user-chip { display: flex; align-items: center; gap: 10px; background: white; border: 1.5px solid #e0e0e0; padding: 8px 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; }
+    .user-chip .avatar { width: 30px; height: 30px; background: #fff3e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+
+    .stat-card { background: white; border-radius: 18px; padding: 22px 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); border: 1.5px solid #f0f0f0; display: flex; align-items: center; gap: 18px; transition: all 0.25s; height: 100%; }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+    .stat-icon { width: 54px; height: 54px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .stat-info h3 { font-family: 'Fredoka One', cursive; font-size: 2.1rem; margin: 0; line-height: 1; }
+    .stat-info p { font-size: 0.78rem; color: #6c757d; font-weight: 700; margin: 4px 0 0; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .section-card { background: white; border-radius: 18px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); border: 1.5px solid #f0f0f0; overflow: hidden; margin-bottom: 24px; }
+    .section-header { padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #f5f5f5; }
+    .section-header h5 { font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: var(--hijau-tua); margin: 0; }
+
+    table { width: 100%; border-collapse: collapse; }
+    table thead th { background: var(--hijau-muda); color: var(--hijau-tua); font-weight: 800; font-size: 0.76rem; padding: 12px 18px; text-transform: uppercase; letter-spacing: 0.5px; border: none; }
+    table tbody td { padding: 13px 18px; font-size: 0.88rem; border-bottom: 1px solid #f5f5f5; vertical-align: middle; color: #444; }
+    table tbody tr:last-child td { border-bottom: none; }
+    table tbody tr:hover { background: #fafafa; }
+
+    .btn-add { background: var(--hijau); color: white; border: none; padding: 9px 20px; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 7px; }
+    .btn-add:hover { background: var(--hijau-tua); transform: translateY(-1px); }
+
+    .btn-terima { background: var(--hijau-muda); color: var(--hijau-tua); border: none; padding: 6px 14px; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-terima:hover { background: var(--hijau); color: white; }
+
+    .btn-selesai { background: #e3f2fd; color: #1565c0; border: none; padding: 6px 14px; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
     .btn-selesai:hover { background: #1565c0; color: white; }
-    .modal-content { border-radius: 16px; border: none; }
-    .modal-header { background: linear-gradient(135deg, var(--oranye-tua), var(--oranye)); color: white; border-radius: 16px 16px 0 0; }
-    .modal-title { font-family: 'Fredoka One', cursive; }
+
+    .btn-del { background: #fdeaea; color: var(--merah); border: none; padding: 6px 14px; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-del:hover { background: var(--merah); color: white; }
+
+    .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.74rem; font-weight: 700; }
+    .tag-green { background: var(--hijau-muda); color: var(--hijau-tua); }
+    .tag-orange { background: #fff3e0; color: #b85c1a; }
+    .tag-blue { background: #e3f2fd; color: #1565c0; }
+    .tag-red { background: #fdeaea; color: #9b3a2a; }
+    .tag-yellow { background: #fef9ec; color: #9a7d2a; }
+
+    .modal-content { border-radius: 20px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    .modal-header { background: linear-gradient(135deg, var(--hijau-tua), var(--hijau)); color: white; border-radius: 20px 20px 0 0; padding: 20px 28px; }
+    .modal-title { font-family: 'Fredoka One', cursive; font-size: 1.3rem; }
     .btn-close { filter: invert(1); }
-    .form-label { font-weight: 700; font-size: 0.85rem; color: var(--oranye-tua); }
-    .form-control, .form-select { border-radius: 10px; border: 2px solid #e0e0e0; font-size: 0.88rem; font-family: 'Nunito', sans-serif; }
-    .form-control:focus, .form-select:focus { border-color: var(--oranye); box-shadow: 0 0 0 3px rgba(240,125,58,0.15); }
-    .btn-simpan { background: var(--oranye); color: white; border: none; padding: 10px 24px; border-radius: 10px; font-weight: 700; width: 100%; font-family: 'Nunito', sans-serif; }
-    .btn-simpan:hover { background: var(--oranye-tua); color: white; }
-    .empty-state { text-align: center; padding: 40px; color: #6c757d; }
-    .empty-state i { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.4; display: block; }
-    .alert-sipilah { border-radius: 10px; font-weight: 600; font-size: 0.88rem; }
-    #map-request { height: 350px; border-radius: 12px; border: 2px solid var(--oranye-muda); }
+    .modal-body { padding: 28px; background: #fafafa; }
 
-    /* Petugas ID input */
-    .id-card { background: white; border-radius: 16px; padding: 20px 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
-    .id-card input { border-radius: 10px; border: 2px solid #e0e0e0; padding: 10px 16px; font-size: 0.9rem; flex: 1; font-family: 'Nunito', sans-serif; }
-    .id-card input:focus { border-color: var(--oranye); outline: none; }
-    .btn-set { background: var(--oranye); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+    .form-label { font-weight: 700; font-size: 0.82rem; color: var(--hijau-tua); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
+    .form-control, .form-select { border-radius: 10px; border: 1.5px solid #e0e0e0; padding: 10px 14px; font-family: 'Nunito', sans-serif; font-size: 0.88rem; background: white; width: 100%; }
+    .form-control:focus, .form-select:focus { border-color: var(--hijau); box-shadow: 0 0 0 3px rgba(45,158,95,0.12); outline: none; }
 
-    .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-    .status-MENUNGGU { background: #fff3e0; color: #b85c1a; }
-    .status-DITERIMA { background: #e8f7ef; color: #1a6b3f; }
-    .status-SELESAI { background: #e3f2fd; color: #1565c0; }
-    .status-DITOLAK { background: #fdeaea; color: #c0392b; }
+    .btn-save { background: var(--hijau); color: white; border: none; padding: 12px; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem; width: 100%; cursor: pointer; transition: all 0.2s; }
+    .btn-save:hover { background: var(--hijau-tua); }
+
+    .toast-box { position: fixed; top: 24px; right: 24px; z-index: 9999; min-width: 280px; }
+    .toast-item { background: white; border-radius: 12px; padding: 14px 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); border-left: 4px solid var(--hijau); font-size: 0.88rem; font-weight: 600; margin-bottom: 10px; animation: slideIn 0.3s ease; display: flex; align-items: center; gap: 10px; }
+    .toast-item.error { border-left-color: var(--merah); }
+    .toast-item.warning { border-left-color: var(--kuning); }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+    .welcome-card { background: linear-gradient(135deg, var(--hijau-tua) 0%, var(--hijau) 100%); border-radius: 20px; padding: 28px 32px; color: white; margin-bottom: 24px; position: relative; overflow: hidden; }
+    .welcome-card::before { content: ''; position: absolute; right: -30px; top: -30px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.06); }
+    .welcome-card h2 { font-family: 'Fredoka One', cursive; font-size: 1.8rem; margin-bottom: 4px; position: relative; }
+    .welcome-card p { opacity: 0.8; font-size: 0.9rem; position: relative; }
+
+    .empty-state { text-align: center; padding: 48px 24px; color: #aaa; }
+    .empty-state i { font-size: 2.2rem; margin-bottom: 12px; display: block; opacity: 0.3; }
+    .empty-state p { font-size: 0.88rem; }
+
+    /* REQUEST STATUS BOX */
+    .status-box { border-radius: 14px; padding: 20px 24px; text-align: center; margin-top: 16px; }
+    .status-box h4 { font-family: 'Fredoka One', cursive; font-size: 1.3rem; margin-bottom: 6px; }
+    .status-box p { font-size: 0.88rem; margin: 0; }
+    .status-menunggu { background: #fef9ec; border: 1.5px solid #f5e4a0; color: #9a7d2a; }
+    .status-diterima { background: var(--hijau-muda); border: 1.5px solid #a8d4b5; color: var(--hijau-tua); }
+
+    /* FORM INPUT TRANSAKSI */
+    .input-form { padding: 24px; }
+    .input-form .row { gap: 0; }
+
+    /* MAP */
+    #map-request { height: 340px; border-radius: 14px; border: 1.5px solid #e8f7ef; }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .fade-up { animation: fadeUp 0.4s ease both; }
-    .ping { animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
-    @keyframes ping { 0% { transform: scale(1); opacity: 1; } 75%, 100% { transform: scale(1.5); opacity: 0; } }
+    .d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.16s; } .d3 { animation-delay: 0.24s; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .pulse { animation: pulse 2s ease infinite; }
   </style>
 </head>
 <body>
 
+<div class="toast-box" id="toastBox"></div>
+
+<!-- SIDEBAR -->
 <div class="sidebar">
-  <div class="sidebar-brand">👷 SIPILAH</div>
-  <nav style="padding: 16px 0;">
-    <a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="#" onclick="showSection('request', this)" id="nav-request">
-      <i class="fas fa-bell"></i> Request Jemputan
-      <span class="notif-badge" id="notif-count" style="display:none;">0</span>
+  <div class="sidebar-brand">
+    <div class="logo">🌿 SIPILAH</div>
+    <span class="role-tag">Petugas</span>
+  </div>
+  <nav>
+    <div class="nav-section">Menu</div>
+    <a href="#" class="active" onclick="showSection('dashboard', this, '🏠 Dashboard', 'Selamat datang, Petugas')">
+      <i class="fas fa-home"></i> Dashboard
     </a>
-    <a href="#" onclick="showSection('input-transaksi', this)"><i class="fas fa-plus-circle"></i> Input Transaksi</a>
-    <a href="#" onclick="showSection('riwayat', this)"><i class="fas fa-history"></i> Riwayat Transaksi</a>
+    <div class="nav-section">Tugas</div>
+    <a href="#" onclick="showSection('request', this, '🔔 Request Jemputan', 'Permintaan masuk dari warga')" id="nav-request">
+      <i class="fas fa-bell"></i> Request Jemputan
+      <span class="notif-dot" id="notif-count" style="display:none;">0</span>
+    </a>
+    <a href="#" onclick="showSection('input-transaksi', this, '➕ Input Transaksi', 'Catat setoran sampah warga')">
+      <i class="fas fa-plus-circle"></i> Input Transaksi
+    </a>
+    <a href="#" onclick="showSection('riwayat', this, '📋 Riwayat Transaksi', 'Semua transaksi sampah')">
+      <i class="fas fa-history"></i> Riwayat Transaksi
+    </a>
   </nav>
+  <div class="sidebar-footer">
+    <a href="/index.html"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+  </div>
 </div>
 
+<!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <h1 id="page-title">🏠 Dashboard Petugas</h1>
-    <div class="petugas-badge"><i class="fas fa-hard-hat me-1"></i> Petugas</div>
-  </div>
-
-  <div id="alert-box"></div>
-
-  <!-- Set ID Petugas -->
-  <div class="id-card fade-up">
-    <i class="fas fa-id-badge" style="color:var(--oranye); font-size:1.2rem;"></i>
-    <input type="number" id="input-petugas-id" placeholder="Masukkan ID petugas kamu...">
-    <button class="btn-set" onclick="setPetugasId()"><i class="fas fa-check me-1"></i> Set ID</button>
+    <div class="topbar-left">
+      <h1 id="page-title">🏠 Dashboard</h1>
+      <p id="page-sub">Selamat datang, Petugas</p>
+    </div>
+    <div class="user-chip">
+      <div class="avatar">👷</div>
+      <span id="user-nama">Petugas</span>
+    </div>
   </div>
 
   <!-- DASHBOARD -->
   <div id="section-dashboard">
+    <div class="welcome-card fade-up">
+      <h2>Halo, Petugas! 👷</h2>
+      <p>Cek request penjemputan masuk dan catat transaksi sampah warga.</p>
+    </div>
     <div class="row g-3 mb-4">
-      <div class="col-md-4 fade-up">
+      <div class="col-md-4 fade-up d1">
         <div class="stat-card">
-          <div class="stat-icon" style="background:#fdeaea; color:#e74c3c;"><i class="fas fa-bell"></i></div>
-          <div><h3 id="stat-request" style="color:#e74c3c;">—</h3><p>Request Menunggu</p></div>
+          <div class="stat-icon" style="background:#fdeaea; color:var(--merah);"><i class="fas fa-bell"></i></div>
+          <div class="stat-info"><h3 id="stat-request" style="color:var(--merah);">—</h3><p>Request Menunggu</p></div>
         </div>
       </div>
-      <div class="col-md-4 fade-up">
+      <div class="col-md-4 fade-up d2">
         <div class="stat-card">
-          <div class="stat-icon" style="background:#fff3e0; color:#f07d3a;"><i class="fas fa-recycle"></i></div>
-          <div><h3 id="stat-transaksi" style="color:#f07d3a;">—</h3><p>Total Transaksi</p></div>
+          <div class="stat-icon" style="background:var(--hijau-muda); color:var(--hijau-tua);"><i class="fas fa-recycle"></i></div>
+          <div class="stat-info"><h3 id="stat-transaksi" style="color:var(--hijau-tua);">—</h3><p>Total Transaksi</p></div>
         </div>
       </div>
-      <div class="col-md-4 fade-up">
+      <div class="col-md-4 fade-up d3">
         <div class="stat-card">
-          <div class="stat-icon" style="background:#e8f7ef; color:#2d9e5f;"><i class="fas fa-users"></i></div>
-          <div><h3 id="stat-warga" style="color:#2d9e5f;">—</h3><p>Total Warga</p></div>
+          <div class="stat-icon" style="background:#e3f2fd; color:#1565c0;"><i class="fas fa-users"></i></div>
+          <div class="stat-info"><h3 id="stat-warga" style="color:#1565c0;">—</h3><p>Total Warga</p></div>
         </div>
       </div>
     </div>
@@ -132,6 +217,7 @@
     <div class="section-card fade-up mb-4">
       <div class="section-header">
         <h5><i class="fas fa-map-marker-alt me-2"></i> Peta Lokasi Request</h5>
+        <button class="btn-add" onclick="loadRequest()"><i class="fas fa-sync"></i> Refresh</button>
       </div>
       <div class="p-3">
         <div id="map-request"></div>
@@ -139,17 +225,14 @@
     </div>
     <div class="section-card fade-up">
       <div class="section-header">
-        <h5><i class="fas fa-bell me-2"></i> Request Penjemputan Masuk</h5>
-        <button class="btn-tambah" onclick="loadRequest()"><i class="fas fa-sync me-1"></i> Refresh</button>
+        <h5><i class="fas fa-bell me-2"></i> Request Masuk</h5>
       </div>
-      <div class="p-3">
+      <div class="p-2">
         <table>
           <thead>
-            <tr><th>No</th><th>Warga</th><th>Alamat</th><th>Catatan</th><th>Status</th><th>Aksi</th></tr>
+            <tr><th>No</th><th>Warga</th><th>Lokasi</th><th>Catatan</th><th>Status</th><th>Aksi</th></tr>
           </thead>
-          <tbody id="tabel-request">
-            <tr><td colspan="6"><div class="empty-state"><i class="fas fa-bell"></i>Memuat request...</div></td></tr>
-          </tbody>
+          <tbody id="tabel-request"></tbody>
         </table>
       </div>
     </div>
@@ -161,7 +244,7 @@
       <div class="section-header">
         <h5><i class="fas fa-plus-circle me-2"></i> Input Transaksi Sampah</h5>
       </div>
-      <div class="p-4">
+      <div class="input-form">
         <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label">Pilih Warga</label>
@@ -188,7 +271,7 @@
             <input type="text" class="form-control" id="trx-keterangan" placeholder="Keterangan tambahan...">
           </div>
           <div class="col-12">
-            <button class="btn-simpan btn" onclick="inputTransaksi()"><i class="fas fa-save me-2"></i> Simpan Transaksi</button>
+            <button class="btn-save" onclick="inputTransaksi()"><i class="fas fa-save me-2"></i> Simpan Transaksi</button>
           </div>
         </div>
       </div>
@@ -199,16 +282,14 @@
   <div id="section-riwayat" style="display:none;">
     <div class="section-card fade-up">
       <div class="section-header">
-        <h5><i class="fas fa-history me-2"></i> Riwayat Semua Transaksi</h5>
+        <h5><i class="fas fa-history me-2"></i> Riwayat Transaksi</h5>
       </div>
-      <div class="p-3">
+      <div class="p-2">
         <table>
           <thead>
             <tr><th>No</th><th>Warga</th><th>Jenis Sampah</th><th>Kategori</th><th>Berat</th><th>Tanggal</th><th>Keterangan</th><th>Aksi</th></tr>
           </thead>
-          <tbody id="tabel-riwayat">
-            <tr><td colspan="8"><div class="empty-state"><i class="fas fa-history"></i>Memuat data...</div></td></tr>
-          </tbody>
+          <tbody id="tabel-riwayat"></tbody>
         </table>
       </div>
     </div>
@@ -219,37 +300,37 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
   const API = 'http://localhost:8080';
-  let petugasId = null;
-  let requestMap = null;
-  let requestMarkers = [];
-  let pollingInterval = null;
+  const sections = ['dashboard','request','input-transaksi','riwayat'];
+  let reqMap = null;
+  let reqMarkers = [];
 
-  function setPetugasId() {
-    const id = document.getElementById('input-petugas-id').value;
-    if (!id) { showAlert('⚠️ Masukkan ID petugas dulu!', 'warning'); return; }
-    petugasId = id;
-    showAlert('✅ ID petugas diset ke #' + id);
-    loadDashboard();
-  }
+  // Ambil data user dari sessionStorage
+  const user = JSON.parse(sessionStorage.getItem('sipilah_user') || '{}');
+  if (user.nama) document.getElementById('user-nama').textContent = user.nama;
 
-  function showSection(name, el) {
-    ['dashboard','request','input-transaksi','riwayat'].forEach(s => document.getElementById('section-' + s).style.display = 'none');
+  function showSection(name, el, title, sub) {
+    sections.forEach(s => document.getElementById('section-' + s).style.display = 'none');
     document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
     document.getElementById('section-' + name).style.display = 'block';
-    el.classList.add('active');
-    const titles = { dashboard: '🏠 Dashboard Petugas', request: '🔔 Request Penjemputan', 'input-transaksi': '➕ Input Transaksi', riwayat: '📋 Riwayat Transaksi' };
-    document.getElementById('page-title').textContent = titles[name];
-    if (name === 'request') { loadRequest(); initRequestMap(); }
+    if (el) el.classList.add('active');
+    if (title) document.getElementById('page-title').textContent = title;
+    if (sub) document.getElementById('page-sub').textContent = sub;
+    if (name === 'request') { loadRequest(); initMap(); }
     if (name === 'input-transaksi') loadFormOptions();
     if (name === 'riwayat') loadRiwayat();
   }
 
-  function showAlert(msg, type = 'success') {
-    const box = document.getElementById('alert-box');
-    box.innerHTML = `<div class="alert alert-${type} alert-sipilah alert-dismissible fade show">${msg} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
-    setTimeout(() => box.innerHTML = '', 3000);
+  function toast(msg, type = 'success') {
+    const box = document.getElementById('toastBox');
+    const icons = { success: '✅', error: '❌', warning: '⚠️' };
+    const el = document.createElement('div');
+    el.className = `toast-item ${type === 'error' ? 'error' : type === 'warning' ? 'warning' : ''}`;
+    el.innerHTML = `<span>${icons[type]}</span> ${msg}`;
+    box.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
   }
 
+  // ===== DASHBOARD =====
   async function loadDashboard() {
     try {
       const [warga, transaksi, requests] = await Promise.all([
@@ -260,85 +341,97 @@
       document.getElementById('stat-warga').textContent = warga.length;
       document.getElementById('stat-transaksi').textContent = transaksi.length;
       document.getElementById('stat-request').textContent = requests.length;
-      // Update notif badge
       const badge = document.getElementById('notif-count');
       if (requests.length > 0) { badge.style.display = 'inline-flex'; badge.textContent = requests.length; }
       else badge.style.display = 'none';
     } catch(e) { console.error(e); }
   }
 
-  function initRequestMap() {
-    if (!requestMap) {
-      requestMap = L.map('map-request').setView([-6.9175, 107.6191], 13);
+  // ===== MAP =====
+  function initMap() {
+    if (!reqMap) {
+      reqMap = L.map('map-request').setView([-6.9175, 107.6191], 13);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(requestMap);
+        attribution: '© OpenStreetMap'
+      }).addTo(reqMap);
     }
+    setTimeout(() => reqMap.invalidateSize(), 200);
   }
 
+  // ===== REQUEST =====
   async function loadRequest() {
-    const res = await fetch(`${API}/api/petugas/request-penjemputan`);
-    const data = await res.json();
+    const data = await fetch(`${API}/api/petugas/request-penjemputan`).then(r => r.json());
     const tbody = document.getElementById('tabel-request');
 
-    // Clear markers lama
-    if (requestMap) {
-      requestMarkers.forEach(m => requestMap.removeLayer(m));
-      requestMarkers = [];
-    }
+    // Clear markers
+    if (reqMap) { reqMarkers.forEach(m => reqMap.removeLayer(m)); reqMarkers = []; }
 
     if (!data.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-bell"></i>Tidak ada request masuk</div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-bell"></i><p>Tidak ada request masuk saat ini</p></div></td></tr>`;
       return;
     }
+
+    const statusTag = { MENUNGGU: 'tag-yellow', DITERIMA: 'tag-green', SELESAI: 'tag-blue', DITOLAK: 'tag-red' };
 
     tbody.innerHTML = data.map((r, i) => `
       <tr>
         <td>${i+1}</td>
         <td><strong>${r.warga?.nama || 'Warga #' + r.warga?.id}</strong></td>
-        <td>${r.alamatLengkap || 'GPS: ' + r.latitude?.toFixed(4) + ', ' + r.longitude?.toFixed(4)}</td>
+        <td style="font-size:0.82rem;">${r.alamatLengkap || (r.latitude ? '📍 ' + r.latitude.toFixed(4) + ', ' + r.longitude.toFixed(4) : '-')}</td>
         <td>${r.catatan || '-'}</td>
-        <td><span class="status-badge status-${r.status}">${r.status}</span></td>
-        <td>
-          ${r.status === 'MENUNGGU' ? `<button class="btn-terima me-1" onclick="terimaRequest(${r.id})"><i class="fas fa-check"></i> Terima</button>` : ''}
-          ${r.status === 'DITERIMA' ? `<button class="btn-selesai" onclick="selesaikanRequest(${r.id})"><i class="fas fa-flag-checkered"></i> Selesai</button>` : ''}
+        <td><span class="tag ${statusTag[r.status] || 'tag-green'}">${r.status}</span></td>
+        <td style="display:flex; gap:6px;">
+          ${r.status === 'MENUNGGU' ? `<button class="btn-terima" onclick="terimaRequest(${r.id})"><i class="fas fa-check me-1"></i>Terima</button>` : ''}
+          ${r.status === 'DITERIMA' ? `<button class="btn-selesai" onclick="selesaikanRequest(${r.id})"><i class="fas fa-flag-checkered me-1"></i>Selesai</button>` : ''}
         </td>
       </tr>`).join('');
 
     // Tambah marker ke peta
-    if (requestMap) {
+    if (reqMap) {
       data.forEach(r => {
         if (r.latitude && r.longitude) {
           const icon = L.divIcon({
-            html: `<div style="background:#e74c3c; color:white; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:14px; box-shadow:0 2px 8px rgba(0,0,0,0.3);">🗑️</div>`,
-            className: '', iconSize: [32, 32], iconAnchor: [16, 16]
+            html: `<div style="background:${r.status==='MENUNGGU'?'#e74c3c':'#2d9e5f'}; color:white; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:15px; box-shadow:0 2px 8px rgba(0,0,0,0.25); border: 2px solid white;">🗑️</div>`,
+            className: '', iconSize: [34, 34], iconAnchor: [17, 17]
           });
-          const marker = L.marker([r.latitude, r.longitude], { icon })
-            .addTo(requestMap)
-            .bindPopup(`<b>${r.warga?.nama || 'Warga'}</b><br>Status: ${r.status}<br>${r.catatan || ''}`);
-          requestMarkers.push(marker);
-          requestMap.setView([r.latitude, r.longitude], 15);
+          const m = L.marker([r.latitude, r.longitude], { icon })
+            .addTo(reqMap)
+            .bindPopup(`<b>${r.warga?.nama || 'Warga'}</b><br><span style="color:${r.status==='MENUNGGU'?'#e74c3c':'#2d9e5f'};font-weight:700;">${r.status}</span><br>${r.catatan || ''}`);
+          reqMarkers.push(m);
+          reqMap.setView([r.latitude, r.longitude], 15);
         }
       });
     }
+
+    // Update notif badge
+    const menunggu = data.filter(r => r.status === 'MENUNGGU').length;
+    const badge = document.getElementById('notif-count');
+    if (menunggu > 0) { badge.style.display = 'inline-flex'; badge.textContent = menunggu; }
+    else badge.style.display = 'none';
   }
 
-  async function terimaRequest(requestId) {
-    if (!petugasId) { showAlert('⚠️ Set ID petugas dulu!', 'warning'); return; }
-    const res = await fetch(`${API}/api/petugas/request-penjemputan/${requestId}/terima`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ petugasId: parseInt(petugasId) })
+  async function terimaRequest(id) {
+    // Ambil ID petugas dari session
+    const user = JSON.parse(sessionStorage.getItem('sipilah_user') || '{}');
+    // Cari ID petugas berdasarkan email
+    const semua = await fetch(`${API}/api/admin/petugas`).then(r => r.json());
+    const petugas = semua.find(p => p.email === user.email);
+    if (!petugas) { toast('Tidak bisa menemukan data petugas!', 'error'); return; }
+    const res = await fetch(`${API}/api/petugas/request-penjemputan/${id}/terima`, {
+      method: 'PUT', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ petugasId: petugas.id })
     });
-    if (res.ok) { showAlert('✅ Request diterima! Segera OTW ke lokasi warga!'); loadRequest(); loadDashboard(); }
-    else showAlert('❌ Gagal terima request!', 'danger');
+    if (res.ok) { toast('Request diterima! Segera OTW ke lokasi warga 🛵'); loadRequest(); loadDashboard(); }
+    else toast('Gagal terima request!', 'error');
   }
 
-  async function selesaikanRequest(requestId) {
-    const res = await fetch(`${API}/api/petugas/request-penjemputan/${requestId}/selesai`, { method: 'PUT' });
-    if (res.ok) { showAlert('✅ Request diselesaikan!'); loadRequest(); loadDashboard(); }
-    else showAlert('❌ Gagal selesaikan!', 'danger');
+  async function selesaikanRequest(id) {
+    const res = await fetch(`${API}/api/petugas/request-penjemputan/${id}/selesai`, { method: 'PUT' });
+    if (res.ok) { toast('Request selesai! ✅'); loadRequest(); loadDashboard(); }
+    else toast('Gagal selesaikan!', 'error');
   }
 
+  // ===== INPUT TRANSAKSI =====
   async function loadFormOptions() {
     const [warga, jenis, kategori] = await Promise.all([
       fetch(`${API}/api/admin/warga`).then(r => r.json()),
@@ -359,49 +452,53 @@
     const jenisId = document.getElementById('trx-jenis').value;
     const kategoriId = document.getElementById('trx-kategori').value;
     const berat = document.getElementById('trx-berat').value;
-    if (!wargaId || !jenisId || !kategoriId || !berat) { showAlert('⚠️ Semua field wajib diisi!', 'warning'); return; }
-    const body = {
-      pengguna: { id: parseInt(wargaId), role: 'PENGGUNA' },
-      jenisSampah: { id: parseInt(jenisId) },
-      kategoriSampah: { id: parseInt(kategoriId) },
-      berat: parseFloat(berat),
-      tanggalSetor: document.getElementById('trx-tanggal').value,
-      keterangan: document.getElementById('trx-keterangan').value
-    };
+    if (!wargaId || !jenisId || !kategoriId || !berat) { toast('Semua field wajib diisi!', 'warning'); return; }
     const res = await fetch(`${API}/api/petugas/transaksi`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        pengguna: { id: parseInt(wargaId), role: 'PENGGUNA' },
+        jenisSampah: { id: parseInt(jenisId) },
+        kategoriSampah: { id: parseInt(kategoriId) },
+        berat: parseFloat(berat),
+        tanggalSetor: document.getElementById('trx-tanggal').value,
+        keterangan: document.getElementById('trx-keterangan').value
+      })
     });
-    if (res.ok) { showAlert('✅ Transaksi berhasil disimpan!'); document.getElementById('trx-berat').value = ''; document.getElementById('trx-keterangan').value = ''; loadDashboard(); }
-    else showAlert('❌ Gagal simpan transaksi!', 'danger');
+    if (res.ok) {
+      toast('Transaksi berhasil disimpan! ♻️');
+      document.getElementById('trx-berat').value = '';
+      document.getElementById('trx-keterangan').value = '';
+      loadDashboard();
+    } else toast('Gagal simpan transaksi!', 'error');
   }
 
+  // ===== RIWAYAT =====
   async function loadRiwayat() {
-    const res = await fetch(`${API}/api/admin/transaksi`);
-    const data = await res.json();
+    const data = await fetch(`${API}/api/admin/transaksi`).then(r => r.json());
     const tbody = document.getElementById('tabel-riwayat');
-    if (!data.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><i class="fas fa-history"></i>Belum ada transaksi</div></td></tr>`; return; }
-    tbody.innerHTML = data.map((t, i) => `
+    tbody.innerHTML = data.length ? data.map((t, i) => `
       <tr>
         <td>${i+1}</td>
         <td><strong>${t.pengguna?.nama || '-'}</strong></td>
         <td>${t.jenisSampah?.namaSampah || '-'}</td>
-        <td><span class="badge-kategori">${t.kategoriSampah?.namaKategori || '-'}</span></td>
+        <td><span class="tag tag-green">${t.kategoriSampah?.namaKategori || '-'}</span></td>
         <td><strong>${t.berat} kg</strong></td>
         <td>${t.tanggalSetor || '-'}</td>
         <td>${t.keterangan || '-'}</td>
-        <td><button class="btn-hapus" onclick="hapusTransaksi(${t.id})"><i class="fas fa-trash"></i></button></td>
-      </tr>`).join('');
+        <td><button class="btn-del" onclick="hapusTransaksi(${t.id})"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('') :
+      `<tr><td colspan="8"><div class="empty-state"><i class="fas fa-history"></i><p>Belum ada transaksi</p></div></td></tr>`;
   }
 
   async function hapusTransaksi(id) {
-    if (!confirm('Yakin hapus transaksi ini?')) return;
+    if (!confirm('Hapus transaksi ini?')) return;
     const res = await fetch(`${API}/api/petugas/transaksi/${id}`, { method: 'DELETE' });
-    if (res.ok) { showAlert('🗑️ Transaksi dihapus!'); loadRiwayat(); loadDashboard(); }
-    else showAlert('❌ Gagal hapus!', 'danger');
+    if (res.ok) { toast('Transaksi dihapus!'); loadRiwayat(); loadDashboard(); }
+    else toast('Gagal hapus!', 'error');
   }
 
-  // Auto refresh request setiap 5 detik
-  setInterval(() => { loadDashboard(); }, 5000);
+  // Auto refresh setiap 5 detik
+  setInterval(loadDashboard, 5000);
   loadDashboard();
 </script>
 </body>

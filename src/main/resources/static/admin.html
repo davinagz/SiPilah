@@ -16,58 +16,64 @@
       --oranye: #f07d3a;
       --merah: #e74c3c;
       --bg: #f4faf7;
-      --putih: #ffffff;
-      --abu: #6c757d;
+      --sidebar-w: 260px;
     }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Nunito', sans-serif;
-      background-color: var(--bg);
-      min-height: 100vh;
+      background: var(--bg);
+      color: #222;
     }
 
-    /* SIDEBAR */
+    /* ===== SIDEBAR ===== */
     .sidebar {
-      width: 240px;
+      width: var(--sidebar-w);
       min-height: 100vh;
-      background: linear-gradient(160deg, var(--hijau-tua), var(--hijau));
+      background: var(--hijau-tua);
       position: fixed;
       left: 0; top: 0;
-      padding: 0;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.1);
       z-index: 100;
-      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
     }
 
     .sidebar-brand {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .sidebar-brand .logo {
       font-family: 'Fredoka One', cursive;
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       color: white;
-      padding: 24px 20px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .sidebar-brand span.leaf { font-size: 1.6rem; }
-
-    .sidebar-role {
-      font-size: 0.7rem;
+    .sidebar-brand .role-tag {
+      display: inline-block;
+      margin-top: 8px;
       background: var(--kuning);
       color: #333;
-      padding: 2px 10px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 12px;
       border-radius: 20px;
-      font-weight: 700;
-      margin-left: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    .sidebar nav { padding: 16px 0; }
+    .sidebar nav { padding: 16px 0; flex: 1; }
 
     .sidebar nav a {
       display: flex;
       align-items: center;
       gap: 12px;
-      color: rgba(255,255,255,0.8);
+      color: rgba(255,255,255,0.7);
       text-decoration: none;
       padding: 12px 24px;
       font-weight: 600;
@@ -76,20 +82,54 @@
       border-left: 3px solid transparent;
     }
 
-    .sidebar nav a:hover, .sidebar nav a.active {
-      background: rgba(255,255,255,0.15);
+    .sidebar nav a i { width: 18px; text-align: center; font-size: 0.9rem; }
+
+    .sidebar nav a:hover {
       color: white;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .sidebar nav a.active {
+      color: white;
+      background: rgba(255,255,255,0.12);
       border-left-color: var(--kuning);
     }
 
-    .sidebar nav a i { width: 20px; text-align: center; }
-
-    /* MAIN */
-    .main {
-      margin-left: 240px;
-      padding: 32px;
+    .sidebar nav .nav-section {
+      padding: 14px 24px 6px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
     }
 
+    .sidebar-footer {
+      padding: 18px 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-footer a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .sidebar-footer a:hover { color: white; }
+
+    /* ===== MAIN ===== */
+    .main {
+      margin-left: var(--sidebar-w);
+      padding: 32px 36px;
+      min-height: 100vh;
+    }
+
+    /* ===== TOPBAR ===== */
     .topbar {
       display: flex;
       justify-content: space-between;
@@ -97,66 +137,91 @@
       margin-bottom: 28px;
     }
 
-    .topbar h1 {
+    .topbar-left h1 {
       font-family: 'Fredoka One', cursive;
-      font-size: 1.6rem;
+      font-size: 1.9rem;
       color: var(--hijau-tua);
       margin: 0;
     }
 
-    .topbar .admin-badge {
-      background: var(--hijau-muda);
-      border: 2px solid var(--hijau);
-      color: var(--hijau-tua);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-weight: 700;
+    .topbar-left p {
       font-size: 0.85rem;
+      color: #6c757d;
+      margin: 2px 0 0;
     }
 
-    /* STAT CARDS */
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border: 1.5px solid #e0e0e0;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .user-chip .avatar {
+      width: 30px; height: 30px;
+      background: var(--hijau-muda);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    /* ===== STAT CARDS ===== */
     .stat-card {
       background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      border-radius: 18px;
+      padding: 22px 24px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      border: 1.5px solid #f0f0f0;
       display: flex;
       align-items: center;
-      gap: 16px;
-      transition: transform 0.2s;
+      gap: 18px;
+      transition: all 0.25s;
+      height: 100%;
     }
 
-    .stat-card:hover { transform: translateY(-3px); }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
 
     .stat-icon {
-      width: 56px; height: 56px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
+      width: 54px; height: 54px;
+      border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
       flex-shrink: 0;
     }
 
-    .stat-card h3 {
+    .stat-info h3 {
       font-family: 'Fredoka One', cursive;
-      font-size: 2rem;
+      font-size: 2.1rem;
       margin: 0;
       line-height: 1;
     }
 
-    .stat-card p {
+    .stat-info p {
+      font-size: 0.78rem;
+      color: #6c757d;
+      font-weight: 700;
       margin: 4px 0 0;
-      font-size: 0.82rem;
-      color: var(--abu);
-      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    /* SECTION CARD */
+    /* ===== SECTION CARD ===== */
     .section-card {
       background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      border-radius: 18px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      border: 1.5px solid #f0f0f0;
       overflow: hidden;
       margin-bottom: 24px;
     }
@@ -166,258 +231,398 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid var(--hijau-muda);
+      border-bottom: 1.5px solid #f5f5f5;
+      background: white;
     }
 
     .section-header h5 {
       font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
       color: var(--hijau-tua);
       margin: 0;
-      font-size: 1.1rem;
     }
 
-    .btn-tambah {
-      background: var(--hijau);
-      color: white;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+    /* ===== TABLE ===== */
+    table { width: 100%; border-collapse: collapse; }
 
-    .btn-tambah:hover { background: var(--hijau-tua); }
-
-    table { width: 100%; }
     table thead th {
       background: var(--hijau-muda);
       color: var(--hijau-tua);
-      font-weight: 700;
-      font-size: 0.82rem;
-      padding: 12px 16px;
+      font-weight: 800;
+      font-size: 0.76rem;
+      padding: 12px 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       border: none;
     }
 
     table tbody td {
-      padding: 12px 16px;
+      padding: 13px 18px;
       font-size: 0.88rem;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #f5f5f5;
       vertical-align: middle;
+      color: #444;
     }
 
-    .badge-role {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
+    table tbody tr:last-child td { border-bottom: none; }
+    table tbody tr:hover { background: #fafafa; }
+
+    /* ===== BUTTONS ===== */
+    .btn-add {
+      background: var(--hijau);
+      color: white;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
       font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
     }
 
-    .badge-warga { background: #e3f2fd; color: #1565c0; }
-    .badge-petugas { background: #fff3e0; color: #e65100; }
-    .badge-admin { background: #f3e5f5; color: #6a1b9a; }
+    .btn-add:hover { background: var(--hijau-tua); transform: translateY(-1px); }
 
-    .btn-hapus {
+    .btn-del {
       background: #fdeaea;
       color: var(--merah);
       border: none;
-      padding: 5px 12px;
+      padding: 6px 14px;
       border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .btn-hapus:hover { background: var(--merah); color: white; }
+    .btn-del:hover { background: var(--merah); color: white; }
 
-    /* MODAL */
-    .modal-content { border-radius: 16px; border: none; }
+    /* ===== TAGS ===== */
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .tag-green { background: var(--hijau-muda); color: var(--hijau-tua); }
+    .tag-orange { background: #fff3e0; color: #b85c1a; }
+    .tag-blue { background: #e3f2fd; color: #1565c0; }
+    .tag-red { background: #fdeaea; color: #9b3a2a; }
+
+    /* ===== MODAL ===== */
+    .modal-content { border-radius: 20px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
     .modal-header {
       background: linear-gradient(135deg, var(--hijau-tua), var(--hijau));
       color: white;
-      border-radius: 16px 16px 0 0;
+      border-radius: 20px 20px 0 0;
+      padding: 20px 28px;
     }
-    .modal-title { font-family: 'Fredoka One', cursive; }
+    .modal-title { font-family: 'Fredoka One', cursive; font-size: 1.3rem; }
     .btn-close { filter: invert(1); }
-    .form-label { font-weight: 700; font-size: 0.85rem; color: var(--hijau-tua); }
-    .form-control, .form-select {
-      border-radius: 10px;
-      border: 2px solid #e0e0e0;
-      font-size: 0.88rem;
-    }
-    .form-control:focus, .form-select:focus {
-      border-color: var(--hijau);
-      box-shadow: 0 0 0 3px rgba(45,158,95,0.15);
+    .modal-body { padding: 28px; background: #fafafa; }
+
+    .form-label {
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--hijau-tua);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
 
-    .btn-simpan {
+    .form-control, .form-select {
+      border-radius: 10px;
+      border: 1.5px solid #e0e0e0;
+      padding: 10px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.88rem;
+      background: white;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--hijau);
+      box-shadow: 0 0 0 3px rgba(45,158,95,0.12);
+    }
+
+    .btn-save {
       background: var(--hijau);
       color: white;
       border: none;
-      padding: 10px 24px;
+      padding: 12px;
       border-radius: 10px;
-      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
       width: 100%;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .btn-simpan:hover { background: var(--hijau-tua); color: white; }
+    .btn-save:hover { background: var(--hijau-tua); }
 
+    /* ===== ALERT ===== */
+    .toast-box {
+      position: fixed;
+      top: 24px; right: 24px;
+      z-index: 9999;
+      min-width: 280px;
+    }
+
+    .toast-item {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border-left: 4px solid var(--hijau);
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      animation: slideIn 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast-item.error { border-left-color: var(--merah); }
+    .toast-item.warning { border-left-color: var(--kuning); }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ===== WELCOME CARD ===== */
+    .welcome-card {
+      background: linear-gradient(135deg, var(--hijau-tua) 0%, var(--hijau) 100%);
+      border-radius: 20px;
+      padding: 28px 32px;
+      color: white;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-card::before {
+      content: '';
+      position: absolute;
+      right: -30px; top: -30px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .welcome-card h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.8rem;
+      margin-bottom: 4px;
+      position: relative;
+    }
+
+    .welcome-card p {
+      opacity: 0.8;
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    /* ===== EMPTY STATE ===== */
     .empty-state {
       text-align: center;
-      padding: 40px;
-      color: var(--abu);
+      padding: 48px 24px;
+      color: #aaa;
     }
 
-    .empty-state i { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.4; }
-
-    .alert-sipilah {
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.88rem;
+    .empty-state i {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: block;
+      opacity: 0.3;
     }
 
-    /* Animasi masuk */
+    .empty-state p { font-size: 0.88rem; }
+
+    /* ===== ANIMATIONS ===== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .fade-up { animation: fadeUp 0.4s ease both; }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
+    .d1 { animation-delay: 0.08s; }
+    .d2 { animation-delay: 0.16s; }
+    .d3 { animation-delay: 0.24s; }
+    .d4 { animation-delay: 0.32s; }
   </style>
 </head>
 <body>
 
+<!-- TOAST -->
+<div class="toast-box" id="toastBox"></div>
+
 <!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sidebar-brand">
-    <span class="leaf">🌿</span> SIPILAH
+    <div class="logo">🌿 SIPILAH</div>
+    <span class="role-tag">Admin</span>
   </div>
   <nav>
-    <a href="#" class="active" onclick="showSection('dashboard')">
+    <div class="nav-section">Menu</div>
+    <a href="#" class="active" onclick="showSection('dashboard', this, '🏠 Dashboard')">
       <i class="fas fa-home"></i> Dashboard
     </a>
-    <a href="#" onclick="showSection('warga')">
-      <i class="fas fa-users"></i> Kelola Warga
+    <div class="nav-section">Kelola</div>
+    <a href="#" onclick="showSection('warga', this, '👥 Kelola Warga')">
+      <i class="fas fa-users"></i> Data Warga
     </a>
-    <a href="#" onclick="showSection('petugas')">
-      <i class="fas fa-hard-hat"></i> Kelola Petugas
+    <a href="#" onclick="showSection('petugas', this, '👷 Kelola Petugas')">
+      <i class="fas fa-hard-hat"></i> Data Petugas
     </a>
-    <a href="#" onclick="showSection('transaksi')">
+    <a href="#" onclick="showSection('transaksi', this, '♻️ Semua Transaksi')">
       <i class="fas fa-recycle"></i> Transaksi
     </a>
-    <a href="#" onclick="showSection('sampah')">
+    <div class="nav-section">Master Data</div>
+    <a href="#" onclick="showSection('kategori', this, '🗂️ Kategori Sampah')">
+      <i class="fas fa-tags"></i> Kategori Sampah
+    </a>
+    <a href="#" onclick="showSection('jenis', this, '🌿 Jenis Sampah')">
       <i class="fas fa-leaf"></i> Jenis Sampah
     </a>
+    <a href="#" onclick="showSection('request', this, '🚛 Request Penjemputan')">
+      <i class="fas fa-truck"></i> Request Jemputan
+    </a>
   </nav>
+  <div class="sidebar-footer">
+    <a href="/index.html"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+  </div>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <h1 id="page-title">🏠 Dashboard Admin</h1>
-    <div class="admin-badge"><i class="fas fa-shield-alt me-1"></i> Admin</div>
+    <div class="topbar-left">
+      <h1 id="page-title">🏠 Dashboard</h1>
+      <p id="page-sub">Selamat datang, Admin</p>
+    </div>
+    <div class="topbar-right">
+      <div class="user-chip">
+        <div class="avatar">🛡️</div>
+        <span id="user-nama">Admin</span>
+      </div>
+    </div>
   </div>
-
-  <div id="alert-box"></div>
 
   <!-- DASHBOARD -->
   <div id="section-dashboard">
+    <div class="welcome-card fade-up">
+      <h2>Selamat Datang, Admin! 👋</h2>
+      <p>Pantau dan kelola seluruh data SIPILAH dari sini.</p>
+    </div>
     <div class="row g-3 mb-4">
-      <div class="col-md-3 fade-up">
+      <div class="col-md-3 fade-up d1">
         <div class="stat-card">
-          <div class="stat-icon" style="background:#e8f7ef; color:#2d9e5f;">
+          <div class="stat-icon" style="background:var(--hijau-muda); color:var(--hijau-tua);">
             <i class="fas fa-users"></i>
           </div>
-          <div>
-            <h3 id="stat-warga" style="color:#2d9e5f;">—</h3>
+          <div class="stat-info">
+            <h3 id="stat-warga" style="color:var(--hijau-tua);">—</h3>
             <p>Total Warga</p>
           </div>
         </div>
       </div>
-      <div class="col-md-3 fade-up delay-1">
+      <div class="col-md-3 fade-up d2">
         <div class="stat-card">
-          <div class="stat-icon" style="background:#fff3e0; color:#f07d3a;">
+          <div class="stat-icon" style="background:#fff3e0; color:#b85c1a;">
             <i class="fas fa-hard-hat"></i>
           </div>
-          <div>
-            <h3 id="stat-petugas" style="color:#f07d3a;">—</h3>
+          <div class="stat-info">
+            <h3 id="stat-petugas" style="color:#b85c1a;">—</h3>
             <p>Total Petugas</p>
           </div>
         </div>
       </div>
-      <div class="col-md-3 fade-up delay-2">
+      <div class="col-md-3 fade-up d3">
         <div class="stat-card">
           <div class="stat-icon" style="background:#e3f2fd; color:#1565c0;">
             <i class="fas fa-recycle"></i>
           </div>
-          <div>
+          <div class="stat-info">
             <h3 id="stat-transaksi" style="color:#1565c0;">—</h3>
             <p>Total Transaksi</p>
           </div>
         </div>
       </div>
-      <div class="col-md-3 fade-up delay-3">
+      <div class="col-md-3 fade-up d4">
         <div class="stat-card">
           <div class="stat-icon" style="background:#f3e5f5; color:#6a1b9a;">
             <i class="fas fa-weight"></i>
           </div>
-          <div>
+          <div class="stat-info">
             <h3 id="stat-berat" style="color:#6a1b9a;">—</h3>
             <p>Total Berat (kg)</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- KELOLA WARGA -->
-  <div id="section-warga" style="display:none;">
+    <!-- Preview transaksi terbaru -->
     <div class="section-card fade-up">
       <div class="section-header">
-        <h5><i class="fas fa-users me-2"></i> Daftar Warga</h5>
-        <button class="btn-tambah" data-bs-toggle="modal" data-bs-target="#modalTambahWarga">
-          <i class="fas fa-plus me-1"></i> Tambah Warga
+        <h5><i class="fas fa-clock me-2"></i> Transaksi Terbaru</h5>
+        <button class="btn-add" onclick="showSection('transaksi', null, '♻️ Semua Transaksi')">
+          Lihat Semua
         </button>
       </div>
-      <div class="p-3">
+      <div class="p-2">
         <table>
           <thead>
-            <tr>
-              <th>No</th><th>Nama</th><th>Email</th><th>No. Telepon</th><th>RT/RW</th><th>Aksi</th>
-            </tr>
+            <tr><th>Warga</th><th>Jenis Sampah</th><th>Berat</th><th>Tanggal</th></tr>
           </thead>
-          <tbody id="tabel-warga">
-            <tr><td colspan="6"><div class="empty-state"><i class="fas fa-users"></i><br>Memuat data...</div></td></tr>
-          </tbody>
+          <tbody id="tabel-transaksi-preview"></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- KELOLA PETUGAS -->
+  <!-- WARGA -->
+  <div id="section-warga" style="display:none;">
+    <div class="section-card fade-up">
+      <div class="section-header">
+        <h5><i class="fas fa-users me-2"></i> Data Warga</h5>
+        <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalWarga">
+          <i class="fas fa-plus"></i> Tambah Warga
+        </button>
+      </div>
+      <div class="p-2">
+        <table>
+          <thead>
+            <tr><th>No</th><th>Nama</th><th>Email</th><th>No. Telepon</th><th>Alamat</th><th>RT/RW</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tabel-warga"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PETUGAS -->
   <div id="section-petugas" style="display:none;">
     <div class="section-card fade-up">
       <div class="section-header">
-        <h5><i class="fas fa-hard-hat me-2"></i> Daftar Petugas</h5>
-        <button class="btn-tambah" data-bs-toggle="modal" data-bs-target="#modalTambahPetugas">
-          <i class="fas fa-plus me-1"></i> Tambah Petugas
+        <h5><i class="fas fa-hard-hat me-2"></i> Data Petugas</h5>
+        <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalPetugas">
+          <i class="fas fa-plus"></i> Tambah Petugas
         </button>
       </div>
-      <div class="p-3">
+      <div class="p-2">
         <table>
           <thead>
-            <tr>
-              <th>No</th><th>Nama</th><th>Email</th><th>No. Telepon</th><th>Wilayah Tugas</th><th>No. Induk</th><th>Aksi</th>
-            </tr>
+            <tr><th>No</th><th>Nama</th><th>Email</th><th>No. Telepon</th><th>Wilayah Tugas</th><th>No. Induk</th><th>Aksi</th></tr>
           </thead>
-          <tbody id="tabel-petugas">
-            <tr><td colspan="7"><div class="empty-state"><i class="fas fa-hard-hat"></i><br>Memuat data...</div></td></tr>
-          </tbody>
+          <tbody id="tabel-petugas"></tbody>
         </table>
       </div>
     </div>
@@ -429,38 +634,69 @@
       <div class="section-header">
         <h5><i class="fas fa-recycle me-2"></i> Semua Transaksi</h5>
       </div>
-      <div class="p-3">
+      <div class="p-2">
         <table>
           <thead>
-            <tr>
-              <th>No</th><th>Warga</th><th>Jenis Sampah</th><th>Kategori</th><th>Berat (kg)</th><th>Tanggal</th><th>Keterangan</th><th>Aksi</th>
-            </tr>
+            <tr><th>No</th><th>Warga</th><th>Jenis Sampah</th><th>Kategori</th><th>Berat</th><th>Tanggal</th><th>Keterangan</th><th>Aksi</th></tr>
           </thead>
-          <tbody id="tabel-transaksi">
-            <tr><td colspan="8"><div class="empty-state"><i class="fas fa-recycle"></i><br>Memuat data...</div></td></tr>
-          </tbody>
+          <tbody id="tabel-transaksi"></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- JENIS SAMPAH -->
-  <div id="section-sampah" style="display:none;">
+  <!-- KATEGORI -->
+  <div id="section-kategori" style="display:none;">
+    <div class="section-card fade-up">
+      <div class="section-header">
+        <h5><i class="fas fa-tags me-2"></i> Kategori Sampah</h5>
+        <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalKategori">
+          <i class="fas fa-plus"></i> Tambah Kategori
+        </button>
+      </div>
+      <div class="p-2">
+        <table>
+          <thead>
+            <tr><th>No</th><th>Nama Kategori</th><th>Deskripsi</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tabel-kategori"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- JENIS -->
+  <div id="section-jenis" style="display:none;">
     <div class="section-card fade-up">
       <div class="section-header">
         <h5><i class="fas fa-leaf me-2"></i> Jenis Sampah</h5>
-        <button class="btn-tambah" data-bs-toggle="modal" data-bs-target="#modalTambahJenis">
-          <i class="fas fa-plus me-1"></i> Tambah Jenis
+        <button class="btn-add" data-bs-toggle="modal" data-bs-target="#modalJenis">
+          <i class="fas fa-plus"></i> Tambah Jenis
         </button>
       </div>
-      <div class="p-3">
+      <div class="p-2">
         <table>
           <thead>
             <tr><th>No</th><th>Nama Sampah</th><th>Kategori</th><th>Satuan</th><th>Aksi</th></tr>
           </thead>
-          <tbody id="tabel-jenis">
-            <tr><td colspan="5"><div class="empty-state"><i class="fas fa-leaf"></i><br>Memuat data...</div></td></tr>
-          </tbody>
+          <tbody id="tabel-jenis"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- REQUEST PENJEMPUTAN -->
+  <div id="section-request" style="display:none;">
+    <div class="section-card fade-up">
+      <div class="section-header">
+        <h5><i class="fas fa-truck me-2"></i> Semua Request Penjemputan</h5>
+      </div>
+      <div class="p-2">
+        <table>
+          <thead>
+            <tr><th>No</th><th>Warga</th><th>Alamat</th><th>Catatan</th><th>Status</th><th>Petugas</th></tr>
+          </thead>
+          <tbody id="tabel-request"></tbody>
         </table>
       </div>
     </div>
@@ -468,113 +704,88 @@
 </div>
 
 <!-- MODAL TAMBAH WARGA -->
-<div class="modal fade" id="modalTambahWarga" tabindex="-1">
+<div class="modal fade" id="modalWarga" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Tambah Warga</h5>
+        <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Tambah Warga Baru</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body p-4">
-        <div class="mb-3">
-          <label class="form-label">Nama Lengkap</label>
-          <input type="text" class="form-control" id="warga-nama" placeholder="Masukkan nama">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12"><label class="form-label">Nama Lengkap</label><input type="text" class="form-control" id="w-nama" placeholder="Nama warga"></div>
+          <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" id="w-email" placeholder="email@gmail.com"></div>
+          <div class="col-md-6"><label class="form-label">Password</label><input type="password" class="form-control" id="w-pass" placeholder="Password"></div>
+          <div class="col-md-6"><label class="form-label">No. Telepon</label><input type="text" class="form-control" id="w-telp" placeholder="08xxxxxxxxxx"></div>
+          <div class="col-md-6"><label class="form-label">RT/RW</label><input type="text" class="form-control" id="w-rtrw" placeholder="001/002"></div>
+          <div class="col-12"><label class="form-label">Alamat</label><input type="text" class="form-control" id="w-alamat" placeholder="Jl. ..."></div>
+          <div class="col-12"><button class="btn-save" onclick="tambahWarga()"><i class="fas fa-save me-2"></i> Simpan Warga</button></div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" id="warga-email" placeholder="email@gmail.com">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" id="warga-password" placeholder="Password">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">No. Telepon</label>
-          <input type="text" class="form-control" id="warga-telepon" placeholder="08xxxxxxxxxx">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Alamat</label>
-          <input type="text" class="form-control" id="warga-alamat" placeholder="Jl. ...">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">RT/RW</label>
-          <input type="text" class="form-control" id="warga-rtrw" placeholder="001/002">
-        </div>
-        <button class="btn-simpan btn" onclick="tambahWarga()">
-          <i class="fas fa-save me-2"></i> Simpan
-        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- MODAL TAMBAH PETUGAS -->
-<div class="modal fade" id="modalTambahPetugas" tabindex="-1">
+<div class="modal fade" id="modalPetugas" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Tambah Petugas</h5>
+        <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Tambah Petugas Baru</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body p-4">
-        <div class="mb-3">
-          <label class="form-label">Nama Lengkap</label>
-          <input type="text" class="form-control" id="petugas-nama" placeholder="Masukkan nama">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12"><label class="form-label">Nama Lengkap</label><input type="text" class="form-control" id="p-nama" placeholder="Nama petugas"></div>
+          <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" id="p-email" placeholder="email@gmail.com"></div>
+          <div class="col-md-6"><label class="form-label">Password</label><input type="password" class="form-control" id="p-pass" placeholder="Password"></div>
+          <div class="col-md-6"><label class="form-label">No. Telepon</label><input type="text" class="form-control" id="p-telp" placeholder="08xxxxxxxxxx"></div>
+          <div class="col-md-6"><label class="form-label">Nomor Induk</label><input type="text" class="form-control" id="p-induk" placeholder="PTG001"></div>
+          <div class="col-12"><label class="form-label">Wilayah Tugas</label><input type="text" class="form-control" id="p-wilayah" placeholder="RW 001"></div>
+          <div class="col-12"><button class="btn-save" onclick="tambahPetugas()"><i class="fas fa-save me-2"></i> Simpan Petugas</button></div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" id="petugas-email" placeholder="email@gmail.com">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" id="petugas-password" placeholder="Password">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">No. Telepon</label>
-          <input type="text" class="form-control" id="petugas-telepon" placeholder="08xxxxxxxxxx">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Wilayah Tugas</label>
-          <input type="text" class="form-control" id="petugas-wilayah" placeholder="RW 001">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Nomor Induk</label>
-          <input type="text" class="form-control" id="petugas-induk" placeholder="PTG001">
-        </div>
-        <button class="btn-simpan btn" onclick="tambahPetugas()">
-          <i class="fas fa-save me-2"></i> Simpan
-        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL TAMBAH JENIS SAMPAH -->
-<div class="modal fade" id="modalTambahJenis" tabindex="-1">
+<!-- MODAL TAMBAH KATEGORI -->
+<div class="modal fade" id="modalKategori" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-tags me-2"></i> Tambah Kategori Sampah</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12"><label class="form-label">Nama Kategori</label><input type="text" class="form-control" id="k-nama" placeholder="Contoh: Organik"></div>
+          <div class="col-12"><label class="form-label">Deskripsi</label><input type="text" class="form-control" id="k-desc" placeholder="Deskripsi kategori..."></div>
+          <div class="col-12"><button class="btn-save" onclick="tambahKategori()"><i class="fas fa-save me-2"></i> Simpan Kategori</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL TAMBAH JENIS -->
+<div class="modal fade" id="modalJenis" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="fas fa-leaf me-2"></i> Tambah Jenis Sampah</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body p-4">
-        <div class="mb-3">
-          <label class="form-label">Nama Sampah</label>
-          <input type="text" class="form-control" id="jenis-nama" placeholder="Contoh: Sisa Makanan">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12"><label class="form-label">Nama Sampah</label><input type="text" class="form-control" id="j-nama" placeholder="Contoh: Sisa Makanan"></div>
+          <div class="col-md-6">
+            <label class="form-label">Kategori</label>
+            <select class="form-select" id="j-kategori"><option value="">Pilih kategori...</option></select>
+          </div>
+          <div class="col-md-6"><label class="form-label">Satuan</label><input type="text" class="form-control" id="j-satuan" placeholder="kg / liter / buah"></div>
+          <div class="col-12"><button class="btn-save" onclick="tambahJenis()"><i class="fas fa-save me-2"></i> Simpan Jenis</button></div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Kategori</label>
-          <select class="form-select" id="jenis-kategori">
-            <option value="">Pilih kategori...</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Satuan</label>
-          <input type="text" class="form-control" id="jenis-satuan" placeholder="kg / liter / buah">
-        </div>
-        <button class="btn-simpan btn" onclick="tambahJenis()">
-          <i class="fas fa-save me-2"></i> Simpan
-        </button>
       </div>
     </div>
   </div>
@@ -583,41 +794,36 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
   const API = 'http://localhost:8080';
+  const sections = ['dashboard','warga','petugas','transaksi','kategori','jenis','request'];
 
-  // ===================== NAVIGASI =====================
-  function showSection(name) {
-    ['dashboard','warga','petugas','transaksi','sampah'].forEach(s => {
-      document.getElementById('section-' + s).style.display = 'none';
-    });
+  // Cek login
+  const user = JSON.parse(sessionStorage.getItem('sipilah_user') || '{}');
+  if (user.nama) document.getElementById('user-nama').textContent = user.nama;
+
+  function showSection(name, el, title) {
+    sections.forEach(s => document.getElementById('section-' + s).style.display = 'none');
     document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
     document.getElementById('section-' + name).style.display = 'block';
-    event.currentTarget.classList.add('active');
-
-    const titles = {
-      dashboard: '🏠 Dashboard Admin',
-      warga: '👥 Kelola Warga',
-      petugas: '👷 Kelola Petugas',
-      transaksi: '♻️ Semua Transaksi',
-      sampah: '🌿 Jenis Sampah'
-    };
-    document.getElementById('page-title').textContent = titles[name];
-
-    if (name === 'warga') loadWarga();
-    if (name === 'petugas') loadPetugas();
-    if (name === 'transaksi') loadTransaksi();
-    if (name === 'sampah') loadJenis();
+    if (el) el.classList.add('active');
+    if (title) {
+      document.getElementById('page-title').textContent = title;
+      document.getElementById('page-sub').textContent = 'Halaman ' + title.replace(/[^a-zA-Z ]/g, '').trim();
+    }
+    const loaders = { warga: loadWarga, petugas: loadPetugas, transaksi: loadTransaksi, kategori: loadKategori, jenis: loadJenis, request: loadRequest };
+    if (loaders[name]) loaders[name]();
   }
 
-  // ===================== ALERT =====================
-  function showAlert(msg, type = 'success') {
-    const box = document.getElementById('alert-box');
-    box.innerHTML = `<div class="alert alert-${type} alert-sipilah alert-dismissible fade show">
-      ${msg} <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>`;
-    setTimeout(() => box.innerHTML = '', 3000);
+  function toast(msg, type = 'success') {
+    const box = document.getElementById('toastBox');
+    const icons = { success: '✅', error: '❌', warning: '⚠️' };
+    const el = document.createElement('div');
+    el.className = `toast-item ${type === 'error' ? 'error' : type === 'warning' ? 'warning' : ''}`;
+    el.innerHTML = `<span>${icons[type]}</span> ${msg}`;
+    box.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
   }
 
-  // ===================== DASHBOARD =====================
+  // ===== DASHBOARD =====
   async function loadDashboard() {
     try {
       const [warga, petugas, transaksi] = await Promise.all([
@@ -628,199 +834,193 @@
       document.getElementById('stat-warga').textContent = warga.length;
       document.getElementById('stat-petugas').textContent = petugas.length;
       document.getElementById('stat-transaksi').textContent = transaksi.length;
-      const totalBerat = transaksi.reduce((sum, t) => sum + (t.berat || 0), 0);
-      document.getElementById('stat-berat').textContent = totalBerat.toFixed(1);
-    } catch(e) {
-      console.error(e);
-    }
+      const berat = transaksi.reduce((s, t) => s + (t.berat || 0), 0);
+      document.getElementById('stat-berat').textContent = berat.toFixed(1);
+
+      // Preview 5 transaksi terbaru
+      const preview = transaksi.slice(-5).reverse();
+      const tbody = document.getElementById('tabel-transaksi-preview');
+      tbody.innerHTML = preview.length ? preview.map(t => `
+        <tr>
+          <td><strong>${t.pengguna?.nama || '-'}</strong></td>
+          <td>${t.jenisSampah?.namaSampah || '-'}</td>
+          <td><span class="tag tag-green">${t.berat} kg</span></td>
+          <td>${t.tanggalSetor || '-'}</td>
+        </tr>`).join('') :
+        `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada transaksi</p></div></td></tr>`;
+    } catch(e) { console.error(e); }
   }
 
-  // ===================== WARGA =====================
+  // ===== WARGA =====
   async function loadWarga() {
-    const res = await fetch(`${API}/api/admin/warga`);
-    const data = await res.json();
+    const data = await fetch(`${API}/api/admin/warga`).then(r => r.json());
     const tbody = document.getElementById('tabel-warga');
-    if (!data.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-users"></i><br>Belum ada warga</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = data.map((w, i) => `
+    tbody.innerHTML = data.length ? data.map((w, i) => `
       <tr>
         <td>${i+1}</td>
         <td><strong>${w.nama}</strong></td>
         <td>${w.email}</td>
         <td>${w.noTelepon || '-'}</td>
-        <td><span class="badge-role badge-warga">${w.rtRw || '-'}</span></td>
-        <td><button class="btn-hapus" onclick="hapusWarga(${w.id})"><i class="fas fa-trash"></i></button></td>
-      </tr>`).join('');
+        <td>${w.alamat || '-'}</td>
+        <td><span class="tag tag-green">${w.rtRw || '-'}</span></td>
+        <td><button class="btn-del" onclick="hapus('warga', ${w.id})"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('') :
+      `<tr><td colspan="7"><div class="empty-state"><i class="fas fa-users"></i><p>Belum ada warga</p></div></td></tr>`;
   }
 
   async function tambahWarga() {
-    const body = {
-      nama: document.getElementById('warga-nama').value,
-      email: document.getElementById('warga-email').value,
-      password: document.getElementById('warga-password').value,
-      noTelepon: document.getElementById('warga-telepon').value,
-      alamat: document.getElementById('warga-alamat').value,
-      rtRw: document.getElementById('warga-rtrw').value
-    };
     const res = await fetch(`${API}/api/admin/warga`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ nama: document.getElementById('w-nama').value, email: document.getElementById('w-email').value, password: document.getElementById('w-pass').value, noTelepon: document.getElementById('w-telp').value, rtRw: document.getElementById('w-rtrw').value, alamat: document.getElementById('w-alamat').value })
     });
-    if (res.ok) {
-      bootstrap.Modal.getInstance(document.getElementById('modalTambahWarga')).hide();
-      showAlert('✅ Warga berhasil ditambahkan!');
-      loadWarga(); loadDashboard();
-    } else {
-      showAlert('❌ Gagal tambah warga!', 'danger');
-    }
+    if (res.ok) { bootstrap.Modal.getInstance(document.getElementById('modalWarga')).hide(); toast('Warga berhasil ditambahkan!'); loadWarga(); loadDashboard(); }
+    else toast('Gagal tambah warga!', 'error');
   }
 
-  async function hapusWarga(id) {
-    if (!confirm('Yakin hapus warga ini?')) return;
-    const res = await fetch(`${API}/api/admin/warga/${id}`, { method: 'DELETE' });
-    if (res.ok) { showAlert('🗑️ Warga berhasil dihapus!'); loadWarga(); loadDashboard(); }
-    else showAlert('❌ Gagal hapus!', 'danger');
-  }
-
-  // ===================== PETUGAS =====================
+  // ===== PETUGAS =====
   async function loadPetugas() {
-    const res = await fetch(`${API}/api/admin/petugas`);
-    const data = await res.json();
+    const data = await fetch(`${API}/api/admin/petugas`).then(r => r.json());
     const tbody = document.getElementById('tabel-petugas');
-    if (!data.length) {
-      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="fas fa-hard-hat"></i><br>Belum ada petugas</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = data.map((p, i) => `
+    tbody.innerHTML = data.length ? data.map((p, i) => `
       <tr>
         <td>${i+1}</td>
         <td><strong>${p.nama}</strong></td>
         <td>${p.email}</td>
         <td>${p.noTelepon || '-'}</td>
-        <td><span class="badge-role badge-petugas">${p.wilayahTugas || '-'}</span></td>
+        <td><span class="tag tag-orange">${p.wilayahTugas || '-'}</span></td>
         <td>${p.nomorInduk || '-'}</td>
-        <td><button class="btn-hapus" onclick="hapusPetugas(${p.id})"><i class="fas fa-trash"></i></button></td>
-      </tr>`).join('');
+        <td><button class="btn-del" onclick="hapus('petugas', ${p.id})"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('') :
+      `<tr><td colspan="7"><div class="empty-state"><i class="fas fa-hard-hat"></i><p>Belum ada petugas</p></div></td></tr>`;
   }
 
   async function tambahPetugas() {
-    const body = {
-      nama: document.getElementById('petugas-nama').value,
-      email: document.getElementById('petugas-email').value,
-      password: document.getElementById('petugas-password').value,
-      noTelepon: document.getElementById('petugas-telepon').value,
-      wilayahTugas: document.getElementById('petugas-wilayah').value,
-      nomorInduk: document.getElementById('petugas-induk').value
-    };
     const res = await fetch(`${API}/api/admin/petugas`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ nama: document.getElementById('p-nama').value, email: document.getElementById('p-email').value, password: document.getElementById('p-pass').value, noTelepon: document.getElementById('p-telp').value, nomorInduk: document.getElementById('p-induk').value, wilayahTugas: document.getElementById('p-wilayah').value })
     });
-    if (res.ok) {
-      bootstrap.Modal.getInstance(document.getElementById('modalTambahPetugas')).hide();
-      showAlert('✅ Petugas berhasil ditambahkan!');
-      loadPetugas(); loadDashboard();
-    } else {
-      showAlert('❌ Gagal tambah petugas!', 'danger');
-    }
+    if (res.ok) { bootstrap.Modal.getInstance(document.getElementById('modalPetugas')).hide(); toast('Petugas berhasil ditambahkan!'); loadPetugas(); loadDashboard(); }
+    else toast('Gagal tambah petugas!', 'error');
   }
 
-  async function hapusPetugas(id) {
-    if (!confirm('Yakin hapus petugas ini?')) return;
-    const res = await fetch(`${API}/api/admin/petugas/${id}`, { method: 'DELETE' });
-    if (res.ok) { showAlert('🗑️ Petugas berhasil dihapus!'); loadPetugas(); loadDashboard(); }
-    else showAlert('❌ Gagal hapus!', 'danger');
-  }
-
-  // ===================== TRANSAKSI =====================
+  // ===== TRANSAKSI =====
   async function loadTransaksi() {
-    const res = await fetch(`${API}/api/admin/transaksi`);
-    const data = await res.json();
+    const data = await fetch(`${API}/api/admin/transaksi`).then(r => r.json());
     const tbody = document.getElementById('tabel-transaksi');
-    if (!data.length) {
-      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><i class="fas fa-recycle"></i><br>Belum ada transaksi</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = data.map((t, i) => `
+    tbody.innerHTML = data.length ? data.map((t, i) => `
       <tr>
         <td>${i+1}</td>
         <td><strong>${t.pengguna?.nama || '-'}</strong></td>
         <td>${t.jenisSampah?.namaSampah || '-'}</td>
-        <td><span class="badge-role badge-warga">${t.kategoriSampah?.namaKategori || '-'}</span></td>
+        <td><span class="tag tag-green">${t.kategoriSampah?.namaKategori || '-'}</span></td>
         <td><strong>${t.berat} kg</strong></td>
         <td>${t.tanggalSetor || '-'}</td>
         <td>${t.keterangan || '-'}</td>
-        <td><button class="btn-hapus" onclick="hapusTransaksi(${t.id})"><i class="fas fa-trash"></i></button></td>
-      </tr>`).join('');
+        <td><button class="btn-del" onclick="hapusTransaksi(${t.id})"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('') :
+      `<tr><td colspan="8"><div class="empty-state"><i class="fas fa-recycle"></i><p>Belum ada transaksi</p></div></td></tr>`;
   }
 
   async function hapusTransaksi(id) {
-    if (!confirm('Yakin hapus transaksi ini?')) return;
+    if (!confirm('Hapus transaksi ini?')) return;
     const res = await fetch(`${API}/api/admin/transaksi/${id}`, { method: 'DELETE' });
-    if (res.ok) { showAlert('🗑️ Transaksi dihapus!'); loadTransaksi(); loadDashboard(); }
-    else showAlert('❌ Gagal hapus!', 'danger');
+    if (res.ok) { toast('Transaksi dihapus!'); loadTransaksi(); loadDashboard(); }
+    else toast('Gagal hapus!', 'error');
   }
 
-  // ===================== JENIS SAMPAH =====================
-  async function loadKategoriOptions() {
-    const res = await fetch(`${API}/api/sampah/kategori`);
-    const data = await res.json();
-    const sel = document.getElementById('jenis-kategori');
-    sel.innerHTML = '<option value="">Pilih kategori...</option>' +
-      data.map(k => `<option value="${k.id}">${k.namaKategori}</option>`).join('');
+  // ===== KATEGORI =====
+  async function loadKategori() {
+    const data = await fetch(`${API}/api/sampah/kategori`).then(r => r.json());
+    const tbody = document.getElementById('tabel-kategori');
+    tbody.innerHTML = data.length ? data.map((k, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td><strong>${k.namaKategori}</strong></td>
+        <td>${k.deskripsi || '-'}</td>
+        <td><button class="btn-del" onclick="hapusKategori(${k.id})"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('') :
+      `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-tags"></i><p>Belum ada kategori</p></div></td></tr>`;
   }
 
+  async function tambahKategori() {
+    const res = await fetch(`${API}/api/sampah/kategori`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ namaKategori: document.getElementById('k-nama').value, deskripsi: document.getElementById('k-desc').value })
+    });
+    if (res.ok) { bootstrap.Modal.getInstance(document.getElementById('modalKategori')).hide(); toast('Kategori ditambahkan!'); loadKategori(); }
+    else toast('Gagal tambah kategori!', 'error');
+  }
+
+  async function hapusKategori(id) {
+    if (!confirm('Hapus kategori ini?')) return;
+    const res = await fetch(`${API}/api/sampah/kategori/${id}`, { method: 'DELETE' });
+    if (res.ok) { toast('Kategori dihapus!'); loadKategori(); }
+    else toast('Gagal hapus!', 'error');
+  }
+
+  // ===== JENIS =====
   async function loadJenis() {
-    const res = await fetch(`${API}/api/sampah/jenis`);
-    const data = await res.json();
+    const data = await fetch(`${API}/api/sampah/jenis`).then(r => r.json());
     const tbody = document.getElementById('tabel-jenis');
-    if (!data.length) {
-      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-leaf"></i><br>Belum ada jenis sampah</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = data.map((j, i) => `
+    tbody.innerHTML = data.length ? data.map((j, i) => `
       <tr>
         <td>${i+1}</td>
         <td><strong>${j.namaSampah}</strong></td>
-        <td><span class="badge-role badge-warga">${j.kategori?.namaKategori || '-'}</span></td>
+        <td><span class="tag tag-green">${j.kategori?.namaKategori || '-'}</span></td>
         <td>${j.satuan || '-'}</td>
-        <td><button class="btn-hapus" onclick="hapusJenis(${j.id})"><i class="fas fa-trash"></i></button></td>
-      </tr>`).join('');
+        <td><button class="btn-del" onclick="hapusJenis(${j.id})"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('') :
+      `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-leaf"></i><p>Belum ada jenis sampah</p></div></td></tr>`;
   }
 
   async function tambahJenis() {
-    const body = {
-      namaSampah: document.getElementById('jenis-nama').value,
-      kategori: { id: document.getElementById('jenis-kategori').value },
-      satuan: document.getElementById('jenis-satuan').value
-    };
     const res = await fetch(`${API}/api/sampah/jenis`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ namaSampah: document.getElementById('j-nama').value, kategori: { id: parseInt(document.getElementById('j-kategori').value) }, satuan: document.getElementById('j-satuan').value })
     });
-    if (res.ok) {
-      bootstrap.Modal.getInstance(document.getElementById('modalTambahJenis')).hide();
-      showAlert('✅ Jenis sampah berhasil ditambahkan!');
-      loadJenis();
-    } else {
-      showAlert('❌ Gagal tambah jenis sampah!', 'danger');
-    }
+    if (res.ok) { bootstrap.Modal.getInstance(document.getElementById('modalJenis')).hide(); toast('Jenis sampah ditambahkan!'); loadJenis(); }
+    else toast('Gagal tambah jenis!', 'error');
   }
 
   async function hapusJenis(id) {
-    if (!confirm('Yakin hapus jenis sampah ini?')) return;
+    if (!confirm('Hapus jenis sampah ini?')) return;
     const res = await fetch(`${API}/api/sampah/jenis/${id}`, { method: 'DELETE' });
-    if (res.ok) { showAlert('🗑️ Jenis sampah dihapus!'); loadJenis(); }
-    else showAlert('❌ Gagal hapus!', 'danger');
+    if (res.ok) { toast('Jenis sampah dihapus!'); loadJenis(); }
+    else toast('Gagal hapus!', 'error');
   }
 
-  // Load modal kategori saat modal dibuka
-  document.getElementById('modalTambahJenis').addEventListener('show.bs.modal', loadKategoriOptions);
+  // Load kategori options ke modal jenis
+  document.getElementById('modalJenis').addEventListener('show.bs.modal', async () => {
+    const data = await fetch(`${API}/api/sampah/kategori`).then(r => r.json());
+    document.getElementById('j-kategori').innerHTML = '<option value="">Pilih kategori...</option>' +
+      data.map(k => `<option value="${k.id}">${k.namaKategori}</option>`).join('');
+  });
+
+  // ===== REQUEST =====
+  async function loadRequest() {
+    const data = await fetch(`${API}/api/admin/request-penjemputan`).then(r => r.json());
+    const tbody = document.getElementById('tabel-request');
+    const statusTag = { MENUNGGU: 'tag-orange', DITERIMA: 'tag-green', SELESAI: 'tag-blue', DITOLAK: 'tag-red' };
+    tbody.innerHTML = data.length ? data.map((r, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td><strong>${r.warga?.nama || '-'}</strong></td>
+        <td>${r.alamatLengkap || (r.latitude ? 'GPS: ' + r.latitude.toFixed(4) + ', ' + r.longitude.toFixed(4) : '-')}</td>
+        <td>${r.catatan || '-'}</td>
+        <td><span class="tag ${statusTag[r.status] || 'tag-green'}">${r.status}</span></td>
+        <td>${r.petugas?.nama || '-'}</td>
+      </tr>`).join('') :
+      `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-truck"></i><p>Belum ada request</p></div></td></tr>`;
+  }
+
+  // ===== HAPUS UMUM =====
+  async function hapus(type, id) {
+    if (!confirm('Yakin hapus data ini?')) return;
+    const urls = { warga: `/api/admin/warga/${id}`, petugas: `/api/admin/petugas/${id}` };
+    const res = await fetch(API + urls[type], { method: 'DELETE' });
+    if (res.ok) { toast('Data berhasil dihapus!'); type === 'warga' ? loadWarga() : loadPetugas(); loadDashboard(); }
+    else toast('Gagal hapus!', 'error');
+  }
 
   // Init
   loadDashboard();
