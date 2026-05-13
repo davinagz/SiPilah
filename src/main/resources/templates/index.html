@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPILAH - Sistem Informasi Pengelolaan Sampah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --hijau-utama: #2d9e5f;
+            --hijau-muda: #e8f7ef;
+            --hijau-tua: #1a6b3f;
+            --kuning: #f5c842;
+        }
+
+        body { font-family: 'Nunito', sans-serif; color: #333; overflow-x: hidden; }
+        h1, h2, h3, h4, .navbar-brand { font-family: 'Fredoka One', cursive; }
+
+        /* NAVBAR */
+        .navbar { padding: 15px 0; background: white !important; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .navbar-brand { color: var(--hijau-tua) !important; font-size: 24px; }
+        .nav-link { font-weight: 700; color: #444 !important; }
+
+        /* HERO SECTION */
+        .hero { background: linear-gradient(135deg, #2d9e5f 0%, #268a52 100%); padding: 100px 0; color: white; }
+        .hero-title { font-size: 52px; line-height: 1.1; }
+        .hero-title span { color: var(--kuning); }
+        .hero-desc { font-size: 1.1rem; opacity: 0.9; max-width: 500px; margin: 25px 0 35px; }
+        .btn-mulai { background-color: var(--kuning); color: #1a1a1a; font-weight: 800; padding: 14px 35px; border-radius: 12px; text-decoration: none; display: inline-block; transition: 0.3s; border: none; }
+        .btn-mulai:hover { transform: scale(1.05); background: #e6b800; }
+
+        /* STAT BOX */
+        .stat-box { background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 20px; margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .stat-item h3 { color: var(--kuning); margin: 0; font-size: 1.5rem; }
+        .stat-item p { font-size: 0.7rem; margin: 0; opacity: 0.8; font-weight: 700; text-transform: uppercase; }
+
+        /* FITUR CARDS */
+        .section-padding { padding: 80px 0; }
+        .fitur-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: none; transition: 0.3s; height: 100%; }
+        .fitur-card:hover { transform: translateY(-10px); }
+        .icon-circle { width: 60px; height: 60px; background: var(--hijau-muda); color: var(--hijau-utama); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; }
+        
+        /* CATEGORY CARDS */
+        .cat-card { border-radius: 20px; padding: 25px; transition: 0.3s; border: 2px solid transparent; height: 100%; }
+        .cat-card:hover { border-color: var(--hijau-utama); background: var(--hijau-muda); }
+
+        .step-box { position: relative; text-align: center; }
+        .step-number { width: 40px; height: 40px; background: var(--hijau-utama); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-weight: bold; font-size: 1.2rem; }
+
+        .eco-tracker { background: var(--hijau-muda); border-radius: 20px; padding: 40px; border: 2px dashed var(--hijau-utama); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">🌿 SIPILAH</a>
+            <div class="collapse navbar-collapse justify-content-center">
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kategori">Kategori</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#cara-kerja">Cara Kerja</a></li>
+                </ul>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="#" class="btn fw-bold px-4" style="color: var(--hijau-utama); border: 2px solid var(--hijau-utama); border-radius: 10px;">Masuk</a>
+                <a href="https://wa.me/6283863435413" target="_blank" class="btn text-white fw-bold px-4" style="background: var(--hijau-utama); border-radius: 10px;">Daftar</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Sistem Informasi<br>Pengelolaan <span>Sampah</span></h1>
+                    <p class="hero-desc">SIPILAH memudahkan warga dan petugas mengelola sampah secara digital — dari setoran hingga laporan real-time.</p>
+                    <a href="https://wa.me/6283863435413?text=Halo%20Admin,%20saya%20mau%20menggunakan%20layanan%20SIPILAH" target="_blank" class="btn-mulai shadow-lg">Mulai Sekarang</a>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div style="font-size: 10rem; margin-bottom: 10px;">♻️</div>
+                    <div class="stat-box mx-auto" style="max-width: 450px;">
+                        <div class="stat-item"><h3>245</h3><p>Warga</p></div>
+                        <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.2); border-right: 1px solid rgba(255,255,255,0.2);"><h3>1.2k</h3><p>Kg Sampah</p></div>
+                        <div class="stat-item"><h3>48</h3><p>Titik TPS</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-light" id="fitur">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6">Fitur Layanan</h2>
+                <p class="text-muted">Akses pengelolaan sampah yang praktis dalam satu genggaman.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="fitur-card text-center">
+                        <div class="icon-circle mx-auto"><i class="fas fa-truck"></i></div>
+                        <h4>Jemput Sampah</h4>
+                        <p class="small text-muted">Request penjemputan sampah dari lokasi Anda dengan pelacakan petugas real-time.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="fitur-card text-center">
+                        <div class="icon-circle mx-auto"><i class="fas fa-calendar-check"></i></div>
+                        <h4>Jadwal Rutin</h4>
+                        <p class="small text-muted">Pantau jadwal harian petugas pengangkut sampah di area perumahan Anda.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="fitur-card text-center">
+                        <div class="icon-circle mx-auto"><i class="fas fa-history"></i></div>
+                        <h4>Riwayat Digital</h4>
+                        <p class="small text-muted">Catatan setoran sampah tersimpan aman, transparan, dan dapat diakses kapan saja.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="kategori">
+        <div class="container">
+            <h2 class="text-center mb-5">Kategori Sampah</h2>
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="cat-card bg-white shadow-sm">
+                        <div style="font-size: 3rem;">🍃</div>
+                        <h5 class="mt-3 text-success fw-bold">Organik</h5>
+                        <p class="small text-muted">Sisa makanan, daun, dan limbah dapur yang mudah terurai.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cat-card bg-white shadow-sm">
+                        <div style="font-size: 3rem;">♻️</div>
+                        <h5 class="mt-3 text-primary fw-bold">Anorganik</h5>
+                        <p class="small text-muted">Plastik, botol, kaleng, dan bahan yang bisa didaur ulang.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cat-card bg-white shadow-sm">
+                        <div style="font-size: 3rem;">⚠️</div>
+                        <h5 class="mt-3 text-danger fw-bold">B3</h5>
+                        <p class="small text-muted">Baterai, lampu, dan zat kimia berbahaya bagi lingkungan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-light" id="cara-kerja">
+        <div class="container">
+            <h2 class="text-center mb-5">Cara Kerja SIPILAH</h2>
+            <div class="row g-4">
+                <div class="col-md-4 step-box">
+                    <div class="step-number">1</div>
+                    <h5>Pilah & Siapkan</h5>
+                    <p class="small text-muted">Pisahkan sampah sesuai kategori di rumah Anda.</p>
+                </div>
+                <div class="col-md-4 step-box">
+                    <div class="step-number">2</div>
+                    <h5>Ajukan Request</h5>
+                    <p class="small text-muted">Gunakan fitur jemput untuk memanggil petugas.</p>
+                </div>
+                <div class="col-md-4 step-box">
+                    <div class="step-number">3</div>
+                    <h5>Selesai</h5>
+                    <p class="small text-muted">Sampah diangkut dan data langsung tercatat di sistem.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="eco-tracker text-center">
+                <h3 class="mb-4">🌱 Dampak Komunitas</h3>
+                <div class="progress mb-3" style="height: 25px; border-radius: 50px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 75%">75% Capaian</div>
+                </div>
+                <p class="fw-bold">1.200kg sampah telah berhasil dikelola melalui sistem!</p>
+                <a href="https://wa.me/6283863435413" class="btn btn-success rounded-pill px-4 mt-2 shadow">Hubungi Admin</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 text-center text-muted small border-top">
+        <p>© 2026 SIPILAH - Integrated Waste Management System | Bandung</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
