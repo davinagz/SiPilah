@@ -1,299 +1,295 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIPILAH — Dashboard Warga</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <style>
-    :root { --biru: #1565c0; --biru-muda: #e3f2fd; --biru-tua: #0d47a1; --hijau: #2d9e5f; --bg: #f5f9ff; }
-    body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; }
-    .sidebar { width: 240px; min-height: 100vh; background: linear-gradient(160deg, var(--biru-tua), var(--biru)); position: fixed; left: 0; top: 0; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
-    .sidebar-brand { font-family: 'Fredoka One', cursive; font-size: 1.8rem; color: white; padding: 24px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 10px; }
-    .sidebar nav a { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.85); text-decoration: none; padding: 12px 24px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; border-left: 3px solid transparent; }
-    .sidebar nav a:hover, .sidebar nav a.active { background: rgba(255,255,255,0.15); color: white; border-left-color: #fff; }
-    .sidebar nav a i { width: 20px; text-align: center; }
-    .main { margin-left: 240px; padding: 32px; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
-    .topbar h1 { font-family: 'Fredoka One', cursive; font-size: 1.6rem; color: var(--biru-tua); margin: 0; }
-    .warga-badge { background: var(--biru-muda); border: 2px solid var(--biru); color: var(--biru-tua); padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
-    .id-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
-    .id-card input { border-radius: 10px; border: 2px solid #e0e0e0; padding: 10px 16px; font-size: 0.9rem; flex: 1; font-family: 'Nunito', sans-serif; }
-    .id-card input:focus { border-color: var(--biru); outline: none; box-shadow: 0 0 0 3px rgba(21,101,192,0.15); }
-    .btn-cari { background: var(--biru); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: 'Nunito', sans-serif; }
-    .btn-cari:hover { background: var(--biru-tua); }
-    .stat-card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); text-align: center; transition: transform 0.2s; }
-    .stat-card:hover { transform: translateY(-3px); }
-    .stat-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 12px; }
-    .stat-card h2 { font-family: 'Fredoka One', cursive; font-size: 2.4rem; margin: 0; line-height: 1; }
-    .stat-card p { margin: 6px 0 0; font-size: 0.85rem; color: #6c757d; font-weight: 600; }
-    .section-card { background: white; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 24px; }
-    .section-header { padding: 18px 24px; border-bottom: 2px solid var(--biru-muda); }
-    .section-header h5 { font-family: 'Fredoka One', cursive; color: var(--biru-tua); margin: 0; font-size: 1.1rem; }
-    table { width: 100%; }
-    table thead th { background: var(--biru-muda); color: var(--biru-tua); font-weight: 700; font-size: 0.82rem; padding: 12px 16px; border: none; }
-    table tbody td { padding: 12px 16px; font-size: 0.88rem; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
-    .badge-kategori { background: #e8f7ef; color: #1a6b3f; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-    .empty-state { text-align: center; padding: 40px; color: #6c757d; }
-    .empty-state i { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.4; display: block; }
-    .alert-sipilah { border-radius: 10px; font-weight: 600; font-size: 0.88rem; }
-    .welcome-card { background: linear-gradient(135deg, var(--biru-tua), var(--biru)); border-radius: 16px; padding: 28px 32px; color: white; margin-bottom: 24px; }
-    .welcome-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.6rem; margin: 0 0 4px; }
-    .welcome-card p { margin: 0; opacity: 0.85; font-size: 0.9rem; }
-
-    /* REQUEST PENJEMPUTAN */
-    .request-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 24px; }
-    .request-card h5 { font-family: 'Fredoka One', cursive; color: var(--biru-tua); margin-bottom: 16px; }
-    #map { height: 300px; border-radius: 12px; border: 2px solid var(--biru-muda); margin-bottom: 16px; }
-    .btn-request { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border: none; padding: 14px 28px; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; width: 100%; font-family: 'Nunito', sans-serif; transition: all 0.2s; }
-    .btn-request:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(231,76,60,0.4); }
-    .btn-request:disabled { background: #ccc; transform: none; box-shadow: none; cursor: not-allowed; }
-
-    .status-box { border-radius: 12px; padding: 20px; text-align: center; margin-top: 16px; }
-    .status-menunggu { background: #fff3e0; border: 2px solid #f07d3a; color: #b85c1a; }
-    .status-diterima { background: #e8f7ef; border: 2px solid #2d9e5f; color: #1a6b3f; }
-    .status-selesai { background: #e3f2fd; border: 2px solid #1565c0; color: #0d47a1; }
-    .status-ditolak { background: #fdeaea; border: 2px solid #e74c3c; color: #c0392b; }
-    .status-box h4 { font-family: 'Fredoka One', cursive; font-size: 1.3rem; margin: 0 0 4px; }
-    .status-box p { margin: 0; font-size: 0.88rem; }
-
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-up { animation: fadeUp 0.4s ease both; }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .pulse { animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-  </style>
-</head>
-<body>
-
-<div class="sidebar">
-  <div class="sidebar-brand">🌱 SIPILAH</div>
-  <nav style="padding: 16px 0;">
-    <a href="#" class="active" onclick="showSection('dashboard', this)"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="#" onclick="showSection('penjemputan', this)"><i class="fas fa-truck"></i> Minta Jemputan</a>
-    <a href="#" onclick="showSection('riwayat', this)"><i class="fas fa-history"></i> Riwayat Sampah</a>
-  </nav>
-</div>
-
-<div class="main">
-  <div class="topbar">
-    <h1 id="page-title">🏠 Dashboard Warga</h1>
-    <div class="warga-badge"><i class="fas fa-user me-1"></i> Warga</div>
-  </div>
-
-  <div id="alert-box"></div>
-
-  <div class="id-card fade-up">
-    <i class="fas fa-search" style="color: var(--biru); font-size: 1.2rem;"></i>
-    <input type="number" id="input-id" placeholder="Masukkan ID warga kamu...">
-    <button class="btn-cari" onclick="cariData()"><i class="fas fa-search me-1"></i> Cari</button>
-  </div>
-
-  <!-- DASHBOARD -->
-  <div id="section-dashboard">
-    <div class="welcome-card fade-up">
-      <h3 id="welcome-nama">👋 Halo, Warga SIPILAH!</h3>
-      <p>Masukkan ID warga kamu di atas untuk melihat data sampahmu.</p>
-    </div>
-    <div class="row g-3">
-      <div class="col-md-6 fade-up delay-1">
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#e3f2fd; color:#1565c0;"><i class="fas fa-recycle"></i></div>
-          <h2 id="stat-transaksi" style="color:#1565c0;">—</h2>
-          <p>Total Transaksi</p>
-        </div>
-      </div>
-      <div class="col-md-6 fade-up delay-2">
-        <div class="stat-card">
-          <div class="stat-icon" style="background:#e8f7ef; color:#2d9e5f;"><i class="fas fa-weight"></i></div>
-          <h2 id="stat-berat" style="color:#2d9e5f;">—</h2>
-          <p>Total Berat Sampah (kg)</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MINTA PENJEMPUTAN -->
-  <div id="section-penjemputan" style="display:none;">
-    <div class="request-card fade-up">
-      <h5><i class="fas fa-map-marker-alt me-2"></i> Lokasi Kamu</h5>
-      <div id="map"></div>
-      <div class="mb-3">
-        <label style="font-weight:700; font-size:0.85rem; color:var(--biru-tua);">Catatan untuk Petugas</label>
-        <input type="text" class="form-control mt-1" id="catatan-request" placeholder="Contoh: Taruh di depan pagar hijau">
-      </div>
-      <button class="btn-request" id="btn-request" onclick="mintaJemputan()">
-        <i class="fas fa-truck me-2"></i> Minta Penjemputan Sekarang!
-      </button>
-      <div id="status-request"></div>
-    </div>
-  </div>
-
-  <!-- RIWAYAT -->
-  <div id="section-riwayat" style="display:none;">
-    <div class="section-card fade-up">
-      <div class="section-header">
-        <h5><i class="fas fa-history me-2"></i> Riwayat Setoran Sampah</h5>
-      </div>
-      <div class="p-3">
-        <table>
-          <thead>
-            <tr><th>No</th><th>Jenis Sampah</th><th>Kategori</th><th>Berat (kg)</th><th>Tanggal</th><th>Keterangan</th></tr>
-          </thead>
-          <tbody id="tabel-riwayat">
-            <tr><td colspan="6"><div class="empty-state"><i class="fas fa-history"></i>Masukkan ID warga dulu ya!</div></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-  const API = 'http://localhost:8080';
-  let currentId = null;
-  let myMap = null;
-  let myLat = null;
-  let myLng = null;
-  let myMarker = null;
-  let pollingInterval = null;
-
-  function showSection(name, el) {
-    ['dashboard','penjemputan','riwayat'].forEach(s => document.getElementById('section-' + s).style.display = 'none');
-    document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
-    document.getElementById('section-' + name).style.display = 'block';
-    el.classList.add('active');
-    const titles = { dashboard: '🏠 Dashboard Warga', penjemputan: '🚛 Minta Penjemputan', riwayat: '📋 Riwayat Sampah' };
-    document.getElementById('page-title').textContent = titles[name];
-    if (name === 'penjemputan') initPenjemputan();
-    if (name === 'riwayat' && currentId) loadRiwayat(currentId);
-  }
-
-  function showAlert(msg, type = 'success') {
-    const box = document.getElementById('alert-box');
-    box.innerHTML = `<div class="alert alert-${type} alert-sipilah alert-dismissible fade show">${msg} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
-    setTimeout(() => box.innerHTML = '', 4000);
-  }
-
-  async function cariData() {
-    const id = document.getElementById('input-id').value;
-    if (!id) { showAlert('⚠️ Masukkan ID warga dulu!', 'warning'); return; }
-    currentId = id;
-    try {
-      const dashboard = await fetch(`${API}/api/pengguna/${id}/dashboard`).then(r => r.json());
-      document.getElementById('stat-transaksi').textContent = dashboard.totalTransaksi;
-      document.getElementById('stat-berat').textContent = (dashboard.totalBerat || 0).toFixed(1) + ' kg';
-      document.getElementById('welcome-nama').textContent = '👋 Halo, Warga #' + id + '!';
-      showAlert('✅ Data warga ditemukan!');
-    } catch(e) {
-      showAlert('❌ ID warga tidak ditemukan!', 'danger');
-      currentId = null;
-    }
-  }
-
-  function initPenjemputan() {
-    if (!currentId) { showAlert('⚠️ Masukkan ID warga dulu!', 'warning'); return; }
-
-    // Init map kalau belum
-    if (!myMap) {
-      myMap = L.map('map').setView([-6.9175, 107.6191], 15);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(myMap);
-    }
-
-    // Ambil lokasi GPS
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        myLat = pos.coords.latitude;
-        myLng = pos.coords.longitude;
-        myMap.setView([myLat, myLng], 16);
-        if (myMarker) myMap.removeLayer(myMarker);
-        myMarker = L.marker([myLat, myLng])
-          .addTo(myMap)
-          .bindPopup('📍 Lokasi kamu').openPopup();
-      }, err => {
-        showAlert('⚠️ Izinkan akses lokasi di browser kamu!', 'warning');
-      });
-    }
-
-    // Cek status request aktif
-    cekStatusRequest();
-    if (pollingInterval) clearInterval(pollingInterval);
-    pollingInterval = setInterval(cekStatusRequest, 5000);
-  }
-
-  async function cekStatusRequest() {
-    if (!currentId) return;
-    try {
-      const data = await fetch(`${API}/api/pengguna/${currentId}/request-penjemputan`).then(r => r.json());
-      const aktif = data.find(r => r.status === 'MENUNGGU' || r.status === 'DITERIMA');
-      if (aktif) tampilkanStatus(aktif);
-      else {
-        document.getElementById('status-request').innerHTML = '';
-        document.getElementById('btn-request').disabled = false;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIPILAH — Dashboard Warga</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --hijau: #2d9e5f;
+        --hijau-muda: #e8f7ef;
+        --hijau-tua: #1a6b3f;
+        --kuning: #f5c842;
+        --bg: #f4faf7;
       }
-    } catch(e) {}
-  }
 
-  function tampilkanStatus(req) {
-    const btn = document.getElementById('btn-request');
-    const statusBox = document.getElementById('status-request');
-    if (req.status === 'MENUNGGU') {
-      btn.disabled = true;
-      statusBox.innerHTML = `
-        <div class="status-box status-menunggu mt-3">
-          <h4 class="pulse">⏳ Menunggu Petugas...</h4>
-          <p>Permintaanmu sudah dikirim. Tunggu ya, petugas akan segera merespons!</p>
-        </div>`;
-    } else if (req.status === 'DITERIMA') {
-      btn.disabled = true;
-      statusBox.innerHTML = `
-        <div class="status-box status-diterima mt-3">
-          <h4>🛵 Petugas OTW ke rumah kamu!</h4>
-          <p>Permintaan diterima oleh petugas. Siapkan sampahmu ya!</p>
-        </div>`;
-    }
-  }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-  async function mintaJemputan() {
-    if (!currentId) { showAlert('⚠️ Masukkan ID warga dulu!', 'warning'); return; }
-    if (!myLat || !myLng) { showAlert('⚠️ Tunggu GPS loading dulu!', 'warning'); return; }
-    const catatan = document.getElementById('catatan-request').value;
-    const body = { latitude: myLat, longitude: myLng, alamat: 'Lokasi GPS', catatan };
-    const res = await fetch(`${API}/api/pengguna/${currentId}/request-penjemputan`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
-    });
-    if (res.ok) {
-      showAlert('✅ Permintaan penjemputan berhasil dikirim!');
-      cekStatusRequest();
-    } else showAlert('❌ Gagal kirim request!', 'danger');
-  }
+      body {
+        font-family: "Nunito", sans-serif;
+        background: var(--bg);
+        color: #222;
+        display: flex;
+        min-height: 100vh;
+      }
 
-  async function loadRiwayat(id) {
-    const res = await fetch(`${API}/api/pengguna/${id}/riwayat`);
-    const data = await res.json();
-    const tbody = document.getElementById('tabel-riwayat');
-    if (!data.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-history"></i>Belum ada riwayat setoran</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = data.map((t, i) => `
-      <tr>
-        <td>${i+1}</td>
-        <td><strong>${t.jenisSampah?.namaSampah || '-'}</strong></td>
-        <td><span class="badge-kategori">${t.kategoriSampah?.namaKategori || '-'}</span></td>
-        <td><strong>${t.berat} kg</strong></td>
-        <td>${t.tanggalSetor || '-'}</td>
-        <td>${t.keterangan || '-'}</td>
-      </tr>`).join('');
-  }
-</script>
-</body>
+      /* SIDEBAR */
+      .sidebar {
+        width: 260px;
+        background: linear-gradient(180deg, var(--hijau-tua) 0%, var(--hijau) 100%);
+        color: white;
+        position: fixed;
+        height: 100vh;
+        z-index: 1000;
+        transition: all 0.3s;
+      }
+
+      .sidebar-brand {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.8rem;
+        padding: 30px 20px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-menu {
+        padding: 20px 0;
+      }
+
+      .nav-item-custom {
+        padding: 12px 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+
+      .nav-item-custom:hover, .nav-item-custom.active {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border-left: 4px solid var(--kuning);
+      }
+
+      /* MAIN CONTENT */
+      .main-content {
+        flex: 1;
+        margin-left: 260px;
+        padding: 30px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: white;
+        padding: 8px 20px;
+        border-radius: 50px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      }
+
+      .user-name {
+        font-weight: 700;
+        color: var(--hijau-tua);
+      }
+
+      /* CARDS */
+      .card-custom {
+        background: white;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        padding: 25px;
+        height: 100%;
+        transition: transform 0.2s;
+      }
+
+      .card-custom:hover {
+        transform: translateY(-5px);
+      }
+
+      .card-title-custom {
+        font-family: "Fredoka One", cursive;
+        color: var(--hijau-tua);
+        margin-bottom: 20px;
+        font-size: 1.3rem;
+      }
+
+      .stat-number {
+        font-family: "Fredoka One", cursive;
+        font-size: 2.5rem;
+        color: var(--hijau);
+      }
+
+      /* BUTTONS */
+      .btn-jemput {
+        background: var(--kuning);
+        color: #1a1a1a;
+        border: none;
+        border-radius: 12px;
+        padding: 15px 25px;
+        font-weight: 800;
+        font-family: "Fredoka One", cursive;
+        width: 100%;
+        transition: all 0.2s;
+        box-shadow: 0 4px 15px rgba(245, 200, 66, 0.3);
+      }
+
+      .btn-jemput:hover {
+        background: #e6b800;
+        transform: scale(1.02);
+      }
+
+      .btn-logout {
+        color: #ff4d4d;
+        text-decoration: none;
+        font-weight: 700;
+        margin-top: auto;
+        padding: 20px 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* TABLE CUSTOM */
+      .table-custom {
+        border-radius: 15px;
+        overflow: hidden;
+      }
+
+      .table-custom thead {
+        background: var(--hijau-muda);
+        color: var(--hijau-tua);
+      }
+
+      /* ANIMATIONS */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .fade-up { animation: fadeUp 0.6s ease both; }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar d-flex flex-column">
+      <div class="sidebar-brand">🌿 SIPILAH</div>
+      <nav class="nav-menu flex-grow-1">
+        <a href="#" class="nav-item-custom active">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="#" class="nav-item-custom">
+          <i class="fas fa-history"></i> Riwayat Setoran
+        </a>
+        <a href="#" class="nav-item-custom">
+          <i class="fas fa-map-marker-alt"></i> Lokasi TPS
+        </a>
+        <a href="#" class="nav-item-custom">
+          <i class="fas fa-user-cog"></i> Pengaturan Akun
+        </a>
+      </nav>
+      <a href="index.html" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Keluar Sistem
+      </a>
+    </div>
+
+    <div class="main-content">
+      <div class="topbar fade-up">
+        <h2 style="font-family: 'Fredoka One', cursive; color: var(--hijau-tua)">
+          Halo, Warga Hebat! 👋
+        </h2>
+        <div class="user-profile">
+          <i class="fas fa-user-circle fa-lg text-success"></i>
+          <span class="user-name" id="display-nama">Memuat...</span>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-5 fade-up" style="animation-delay: 0.1s">
+        <div class="col-md-4">
+          <div class="card-custom text-center">
+            <p class="text-muted fw-bold mb-1">Total Setoran</p>
+            <div class="stat-number">24 <small style="font-size: 1rem">kg</small></div>
+            <p class="mb-0 text-success"><i class="fas fa-arrow-up"></i> +2kg minggu ini</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-custom text-center">
+            <p class="text-muted fw-bold mb-1">Poin Lingkungan</p>
+            <div class="stat-number" style="color: var(--kuning)">1.250</div>
+            <p class="mb-0 text-muted">Tukar dengan merchandise</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-custom d-flex align-items-center justify-content-center">
+            <button class="btn-jemput" onclick="requestJemput()">
+              <i class="fas fa-truck-moving me-2"></i> REQUEST JEMPUT
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row fade-up" style="animation-delay: 0.2s">
+        <div class="col-12">
+          <div class="card-custom">
+            <h5 class="card-title-custom">
+              <i class="fas fa-clock me-2"></i>Riwayat Aktivitas Terakhir
+            </h5>
+            <div class="table-responsive">
+              <table class="table table-hover table-custom">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Jenis Sampah</th>
+                    <th>Berat</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="tabel-riwayat">
+                  <tr>
+                    <td>12 Mei 2026</td>
+                    <td><span class="badge bg-success">Organik</span></td>
+                    <td>5.5 kg</td>
+                    <td><span class="badge rounded-pill bg-info text-dark">Selesai</span></td>
+                  </tr>
+                  <tr>
+                    <td>10 Mei 2026</td>
+                    <td><span class="badge bg-primary">Anorganik</span></td>
+                    <td>3.0 kg</td>
+                    <td><span class="badge rounded-pill bg-info text-dark">Selesai</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Simulasi pengambilan data session (Contoh jika kamu menyimpan nama di localStorage saat login)
+      document.addEventListener('DOMContentLoaded', () => {
+          // Ganti dengan logic real dari backend nantinya
+          document.getElementById('display-nama').innerText = "Bpk. Budi Santoso";
+      });
+
+      function requestJemput() {
+        alert("Permintaan penjemputan berhasil dikirim! Petugas akan segera menuju lokasi Anda berdasarkan GPS.");
+      }
+    </script>
+  </body>
 </html>
