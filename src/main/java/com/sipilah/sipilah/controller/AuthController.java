@@ -21,16 +21,17 @@ public class AuthController {
         String email = request.get("email");
         String password = request.get("password");
 
-        Pengguna pengguna = layananPengguna.cariByEmail(email);
-
-        // Email belum terdaftar
-        if (pengguna == null) {
+        // Cek email terdaftar
+        Pengguna pengguna = null;
+        try {
+            pengguna = layananPengguna.cariByEmail(email);
+        } catch (Exception e) {
             Map<String, String> error = new HashMap<>();
             error.put("pesan", "EMAIL_TIDAK_TERDAFTAR");
             return ResponseEntity.status(404).body(error);
         }
 
-        // Password salah
+        // Cek password
         if (!pengguna.getPassword().equals(password)) {
             Map<String, String> error = new HashMap<>();
             error.put("pesan", "PASSWORD_SALAH");

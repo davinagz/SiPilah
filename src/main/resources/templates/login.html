@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - SIPILAH</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Nunito', sans-serif; background-color: #f8f9fa; }
+        .card-login { border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .btn-masuk { background-color: #2d9e5f; color: white; font-weight: 700; border-radius: 10px; padding: 12px; width: 100%; border: none; }
+        .btn-masuk:hover { background-color: #1a6b3f; }
+        .brand { font-family: 'Fredoka One', cursive; color: #1a6b3f; font-size: 2rem; }
+    </style>
+</head>
+<body class="d-flex align-items-center vh-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card card-login p-4">
+                    <div class="text-center mb-4">
+                        <span class="brand">🌿 SIPILAH</span>
+                        <p class="text-muted">Silakan masuk ke akun Anda</p>
+                    </div>
+                    
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Email</label>
+                            <input type="email" id="email" class="form-control" placeholder="nama@email.com" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Password</label>
+                            <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-masuk">Masuk Sekarang</button>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <a th:href="@{/}" class="text-decoration-none small text-success">← Kembali ke Beranda</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Memanggil API AuthController yang sudah kamu buat
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.pesan);
+                // Redirect berdasarkan role yang didapat dari database
+                if (result.role === 'ADMIN') window.location.href = "/admin";
+                else if (result.role === 'PETUGAS') window.location.href = "/petugas";
+                else window.location.href = "/pengguna";
+            } else {
+                alert(result.pesan); // Menampilkan pesan error dari backend
+            }
+        };
+    </script>
+</body>
+</html>
