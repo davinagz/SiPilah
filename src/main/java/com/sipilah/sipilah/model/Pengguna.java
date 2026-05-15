@@ -75,6 +75,7 @@ public abstract class Pengguna extends EntitasDasar {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "no_telepon")
     private String noTelepon;
 
     // =====================

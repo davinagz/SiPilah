@@ -7,7 +7,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ViewController {
 
     @GetMapping("/")
-    public String home() {
-        return "redirect:/index.html";
+    public String index() {
+        return "index";
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin";
+    }
+
+    @GetMapping("/petugas")
+    public String petugas() {
+        return "petugas";
+    }
+
+    @GetMapping("/pengguna")
+    public String pengguna() {
+        return "pengguna";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 }
