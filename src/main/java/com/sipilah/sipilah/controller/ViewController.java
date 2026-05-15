@@ -6,21 +6,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ViewController {
 
-    // 1. Halaman Utama
     @GetMapping("/")
     public String home() {
-        return "index"; // Dia akan otomatis mencari templates/index.html
+        return "index";
     }
 
-    // 2. Halaman Pengguna
     @GetMapping("/pengguna")
     public String halamanPengguna() {
-        return "pengguna"; // Dia akan mencari templates/pengguna.html
+        return "pengguna";
     }
 
-    // 3. Halaman Petugas
     @GetMapping("/petugas")
     public String halamanPetugas() {
-        return "petugas"; // Dia akan mencari templates/petugas.html
+        return "petugas";
+    }
+
+    // Tambah ini
+    @GetMapping("/admin")
+    public String halamanAdmin() {
+        return "admin";
     }
 }

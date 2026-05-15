@@ -549,15 +549,9 @@
           }
 
           // Login berhasil — redirect sesuai role
-          if (data.role === "ADMIN") window.location.href = "/admin.html";
-          else if (data.role === "PETUGAS")
-            window.location.href = "/petugas.html";
-          else if (data.role === "PENGGUNA")
-            window.location.href = "/pengguna.html";
-          else {
-            alertBox.innerHTML = `<div class="alert alert-danger" style="border-radius:10px; font-size:0.85rem;">
-          Role tidak dikenali!</div>`;
-          }
+          if (data.role === "ADMIN") window.location.href = "/admin";
+          else if (data.role === "PETUGAS") window.location.href = "/petugas";
+          else if (data.role === "PENGGUNA") window.location.href = "/pengguna";
         } catch (e) {
           alertBox.innerHTML = `<div class="alert alert-danger" style="border-radius:10px; font-size:0.85rem; font-weight:600;">
         🔴 Tidak bisa konek ke server. Pastikan aplikasi sudah berjalan.</div>`;
