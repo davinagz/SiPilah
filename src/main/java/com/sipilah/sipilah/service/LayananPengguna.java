@@ -9,22 +9,47 @@ import java.util.List;
 
 public interface LayananPengguna {
 
-    // Umum
+    // =====================================================
+    // UMUM
+    // =====================================================
+
     Pengguna cariById(Long id);
+
     Pengguna cariByEmail(String email);
+
+    Pengguna updatePengguna(Pengguna pengguna);
+
     void hapusPengguna(Long id);
 
-    // Admin
+    // =====================================================
+    // ADMIN
+    // =====================================================
+
     Admin tambahAdmin(Admin admin);
+
     List<Admin> semuaAdmin();
 
-    // Warga
-    PenggunaAktif tambahWarga(PenggunaAktif warga);
-    List<PenggunaAktif> semuaWarga();
-    List<PenggunaAktif> wargaByRtRw(String rtRw);
+    // =====================================================
+    // WARGA
+    // =====================================================
 
-    // Petugas
-    Petugas tambahPetugas(Petugas petugas);
+    PenggunaAktif tambahWarga(
+            PenggunaAktif warga);
+
+    List<PenggunaAktif> semuaWarga();
+
+    List<PenggunaAktif> wargaByRtRw(
+            String rtRw);
+
+    // =====================================================
+    // PETUGAS
+    // =====================================================
+
+    Petugas tambahPetugas(
+            Petugas petugas);
+
     List<Petugas> semuaPetugas();
-    List<Petugas> petugasByWilayah(String wilayah);
+
+    List<Petugas> petugasByWilayah(
+            String wilayah);
 }
