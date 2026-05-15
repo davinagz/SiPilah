@@ -23,9 +23,17 @@ public class AuthController {
 
         Pengguna pengguna = layananPengguna.cariByEmail(email);
 
+        // Email belum terdaftar
+        if (pengguna == null) {
+            Map<String, String> error = new HashMap<>();
+            error.put("pesan", "EMAIL_TIDAK_TERDAFTAR");
+            return ResponseEntity.status(404).body(error);
+        }
+
+        // Password salah
         if (!pengguna.getPassword().equals(password)) {
             Map<String, String> error = new HashMap<>();
-            error.put("pesan", "Email atau password salah");
+            error.put("pesan", "PASSWORD_SALAH");
             return ResponseEntity.badRequest().body(error);
         }
 
