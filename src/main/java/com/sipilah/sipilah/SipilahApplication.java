@@ -1,16 +1,17 @@
 package com.sipilah.sipilah;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
-import com.sipilah.sipilah.model.Admin;
 import com.sipilah.sipilah.model.KategoriSampah;
+import com.sipilah.sipilah.model.Admin;
+import com.sipilah.sipilah.model.Petugas;
 
-import com.sipilah.sipilah.repository.RepoAdmin;
 import com.sipilah.sipilah.repository.RepoKategori;
+import com.sipilah.sipilah.repository.RepoAdmin;
+import com.sipilah.sipilah.repository.RepoPetugas;
 
 @SpringBootApplication
 public class SipilahApplication {
@@ -23,30 +24,22 @@ public class SipilahApplication {
         );
     }
 
-    // =====================================================
-    // AUTO INSERT DATA
-    // =====================================================
-
     @Bean
     CommandLineRunner initData(
 
             RepoKategori kategoriRepo,
-
-            RepoAdmin repoAdmin
+            RepoAdmin repoAdmin,
+            RepoPetugas repoPetugas
 
     ) {
 
         return args -> {
 
-            // =====================================================
+            // ==============================
             // KATEGORI SAMPAH
-            // =====================================================
+            // ==============================
 
             if (kategoriRepo.count() == 0) {
-
-                // =====================
-                // ORGANIK
-                // =====================
 
                 KategoriSampah organik =
                         new KategoriSampah();
@@ -61,10 +54,6 @@ public class SipilahApplication {
 
                 kategoriRepo.save(organik);
 
-                // =====================
-                // ANORGANIK
-                // =====================
-
                 KategoriSampah anorganik =
                         new KategoriSampah();
 
@@ -78,14 +67,12 @@ public class SipilahApplication {
 
                 kategoriRepo.save(anorganik);
 
-                // =====================
-                // B3
-                // =====================
-
                 KategoriSampah b3 =
                         new KategoriSampah();
 
-                b3.setNamaKategori("B3");
+                b3.setNamaKategori(
+                        "B3"
+                );
 
                 b3.setDeskripsi(
                         "Bahan Berbahaya dan Beracun"
@@ -94,20 +81,21 @@ public class SipilahApplication {
                 kategoriRepo.save(b3);
 
                 System.out.println(
-                        "KATEGORI SAMPAH BERHASIL DIBUAT"
+                        "✅ Kategori sampah berhasil dibuat!"
                 );
             }
 
-            // =====================================================
+            // ==============================
             // ADMIN DEFAULT
-            // =====================================================
+            // ==============================
 
             if (repoAdmin.count() == 0) {
 
-                Admin admin = new Admin();
+                Admin admin =
+                        new Admin();
 
                 admin.setNama(
-                        "Administrator"
+                        "Admin SIPILAH"
                 );
 
                 admin.setAlamat(
@@ -123,25 +111,63 @@ public class SipilahApplication {
                 );
 
                 admin.setNoTelepon(
-                        "082118713616"
+                        "081234567890"
                 );
 
                 admin.setStatus(
                         "APPROVED"
                 );
 
-                admin.setJabatan(
-                        "Super Admin"
-                );
-
-                // =====================
-                // SIMPAN DATABASE
-                // =====================
-
                 repoAdmin.save(admin);
 
                 System.out.println(
-                        "ADMIN DEFAULT BERHASIL DIBUAT"
+                        "✅ Admin berhasil dibuat!"
+                );
+            }
+
+            // ==============================
+            // PETUGAS DEFAULT
+            // ==============================
+
+            if (repoPetugas.count() == 0) {
+
+                Petugas petugas =
+                        new Petugas();
+
+                petugas.setNama(
+                        "Budi Budiman"
+                );
+
+                petugas.setAlamat(
+                        "Bandung Barat"
+                );
+
+                petugas.setEmail(
+                        "budi@sipilah.com"
+                );
+
+                petugas.setPassword(
+                        "budi123"
+                );
+
+                petugas.setNoTelepon(
+                        "082118713616"
+                );
+
+                petugas.setStatus(
+                        "APPROVED"
+                );
+
+                petugas.setWilayahTugas(
+                        "Bandung Barat"
+                );
+
+                repoPetugas.save(
+                        petugas
+                );
+
+                System.out.println(
+                        "✅ Petugas berhasil dibuat!"
                 );
             }
         };

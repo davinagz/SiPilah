@@ -1,74 +1,519 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Login - SIPILAH</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Nunito', sans-serif; background-color: #f8f9fa; }
-        .card-login { border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .btn-masuk { background-color: #2d9e5f; color: white; font-weight: 700; border-radius: 10px; padding: 12px; width: 100%; border: none; }
-        .btn-masuk:hover { background-color: #1a6b3f; }
-        .brand { font-family: 'Fredoka One', cursive; color: #1a6b3f; font-size: 2rem; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIPILAH — Masuk</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --g1: #071a0e;
+      --g2: #0f3320;
+      --g3: #1a5c38;
+      --g4: #2d7a4f;
+      --g5: #3fa66b;
+      --g6: #6dd08a;
+      --g7: #a8f0bc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Space Grotesk", sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(155deg, var(--g1) 0%, var(--g2) 40%, #183d28 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── BACKGROUND ORBS ── */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+
+    .orb1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(63,166,107,.22) 0%, transparent 70%);
+      top: -180px; right: -100px;
+    }
+
+    .orb2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(109,208,138,.14) 0%, transparent 70%);
+      bottom: -120px; left: 60px;
+    }
+
+    /* ── BUBBLES ── */
+    .bbl {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(109,208,138,.15), rgba(63,166,107,.03));
+      border: 1px solid rgba(109,208,138,.1);
+      animation: riseBbl linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes riseBbl {
+      0%   { transform: translateY(110vh) scale(.8) rotate(0deg); opacity: 0; }
+      8%   { opacity: 0.8; }
+      92%  { opacity: 0.4; }
+      100% { transform: translateY(-15vh) scale(1.1) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── CARD ── */
+    .login-wrap {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 440px;
+      animation: fadeSlideUp .7s ease both;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      padding: 44px 40px 40px;
+      box-shadow: 0 28px 80px rgba(0,0,0,0.35);
+    }
+
+    /* ── LOGO ── */
+    .logo-area {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo-box {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, var(--g5), var(--g6));
+      border-radius: 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 8px 28px rgba(63,166,107,.45);
+      margin-bottom: 14px;
+      animation: floatLogo 3s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
+    .logo-name {
+      font-family: "Outfit", sans-serif;
+      font-weight: 900;
+      font-size: 2rem;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      display: block;
+    }
+
+    .logo-name em {
+      color: var(--g6);
+      font-style: normal;
+    }
+
+    .logo-tagline {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 6px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      display: block;
+    }
+
+    /* ── FORM LABEL ── */
+    .f-lbl {
+      display: block;
+      font-size: 0.77rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 7px;
+    }
+
+    /* ── INPUT ── */
+    .input-wrap {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.35);
+      font-size: 0.84rem;
+      pointer-events: none;
+    }
+
+    .f-input {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.13);
+      border-radius: 14px;
+      padding: 13px 16px 13px 40px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 0.92rem;
+      color: #fff;
+      transition: all 0.25s;
+    }
+
+    .f-input::placeholder { color: rgba(255,255,255,0.3); }
+    .f-input:focus {
+      outline: none;
+      border-color: var(--g5);
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 0 4px rgba(63,166,107,0.18);
+    }
+
+    /* ── PASSWORD TOGGLE ── */
+    .pass-toggle {
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: rgba(255,255,255,0.35);
+      cursor: pointer; font-size: 0.84rem;
+      padding: 0; transition: color 0.2s;
+    }
+
+    .pass-toggle:hover { color: var(--g6); }
+
+    /* ── ERROR ALERT ── */
+    .err-box {
+      background: rgba(231,76,60,0.15);
+      border: 1px solid rgba(231,76,60,0.35);
+      border-radius: 12px;
+      padding: 12px 15px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #ff9999;
+      margin-bottom: 18px;
+      display: none;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .err-box.show { display: flex; }
+
+    /* ── SUBMIT BUTTON ── */
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--g5), var(--g6));
+      color: var(--g1);
+      border: none;
+      border-radius: 14px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 8px 26px rgba(63,166,107,.38);
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-login:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 38px rgba(63,166,107,.55);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ── SPINNER ── */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(7,26,14,0.25);
+      border-top-color: var(--g1);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* ── BACK LINK ── */
+    .back-area {
+      text-align: center;
+      margin-top: 22px;
+    }
+
+    .back-link {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.83rem;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex; align-items: center; gap: 7px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--g6); }
+
+    /* ── INFO WA LINK ── */
+    .wa-link {
+      color: var(--g6);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .wa-link:hover { text-decoration: underline; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.09);
+      margin: 22px 0;
+    }
+
+    .no-account {
+      text-align: center;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.38);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 480px) {
+      .login-card { padding: 32px 24px; }
+    }
+  </style>
 </head>
-<body class="d-flex align-items-center vh-100">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card card-login p-4">
-                    <div class="text-center mb-4">
-                        <span class="brand">🌿 SIPILAH</span>
-                        <p class="text-muted">Silakan masuk ke akun Anda</p>
-                    </div>
-                    
-                    <form id="loginForm">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Email</label>
-                            <input type="email" id="email" class="form-control" placeholder="nama@email.com" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Password</label>
-                            <input type="password" id="password" class="form-control" placeholder="••••••••" required>
-                        </div>
-                        <button type="submit" class="btn-masuk">Masuk Sekarang</button>
-                    </form>
-                    
-                    <div class="text-center mt-3">
-                        <a th:href="@{/}" class="text-decoration-none small text-success">← Kembali ke Beranda</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+<body>
+
+<!-- ORBS -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- SCRIPT BUBBLE -->
+<script>
+  (function() {
+    [32,50,72,100,130].forEach(s => {
+      for (let j = 0; j < 2; j++) {
+        const b = document.createElement("div");
+        b.className = "bbl";
+        b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${12+Math.random()*16}s;animation-delay:${-Math.random()*20}s;`;
+        document.body.appendChild(b);
+      }
+    });
+  })();
+</script>
+
+<!-- FORM -->
+<div class="login-wrap">
+  <div class="login-card">
+
+    <!-- Logo -->
+    <div class="logo-area">
+      <div class="logo-box">🌿</div>
+      <span class="logo-name">SIP<em>I</em>LAH</span>
+      <span class="logo-tagline">Sistem Informasi Pengelolaan Sampah Digital</span>
     </div>
 
-    <script>
-        document.getElementById('loginForm').onsubmit = async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    <!-- Error alert -->
+    <div class="err-box" id="err-box">
+      <i class="fas fa-exclamation-circle" style="flex-shrink:0;"></i>
+      <span id="err-msg">Email atau password salah.</span>
+    </div>
 
-            // Memanggil API AuthController yang sudah kamu buat
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+    <!-- Email -->
+    <div>
+      <label class="f-lbl">Email</label>
+      <div class="input-wrap">
+        <i class="fas fa-envelope input-icon"></i>
+        <input
+          type="email" id="email" class="f-input"
+          placeholder="nama@email.com"
+          onkeydown="if(event.key==='Enter') doLogin()"
+          autocomplete="email"
+        />
+      </div>
+    </div>
 
-            const result = await response.json();
+    <!-- Password -->
+    <div>
+      <label class="f-lbl">Password</label>
+      <div class="input-wrap">
+        <i class="fas fa-lock input-icon"></i>
+        <input
+          type="password" id="password" class="f-input"
+          placeholder="••••••••"
+          onkeydown="if(event.key==='Enter') doLogin()"
+          autocomplete="current-password"
+          style="padding-right:42px;"
+        />
+        <button class="pass-toggle" type="button" onclick="togglePass()" id="pass-btn" title="Tampilkan/sembunyikan password">
+          <i class="fas fa-eye" id="pass-icon"></i>
+        </button>
+      </div>
+    </div>
 
-            if (response.ok) {
-                alert(result.pesan);
-                // Redirect berdasarkan role yang didapat dari database
-                if (result.role === 'ADMIN') window.location.href = "/admin";
-                else if (result.role === 'PETUGAS') window.location.href = "/petugas";
-                else window.location.href = "/pengguna";
-            } else {
-                alert(result.pesan); // Menampilkan pesan error dari backend
-            }
-        };
-    </script>
+    <!-- Submit -->
+    <button class="btn-login" id="btn-login" onclick="doLogin()">
+      <i class="fas fa-sign-in-alt"></i>
+      <span id="btn-text">Masuk</span>
+    </button>
+
+    <hr class="divider" />
+
+    <p class="no-account">
+      Belum punya akun? Daftar via
+      <a href="https://wa.me/6283863435413?text=Halo%20Admin,%20saya%20mau%20mendaftar%20SIPILAH" target="_blank" class="wa-link">
+        <i class="fab fa-whatsapp me-1"></i>WhatsApp Admin
+      </a>
+    </p>
+
+  </div>
+
+  <div class="back-area">
+    <a href="/" class="back-link">
+      <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+    </a>
+  </div>
+</div>
+
+<script>
+  // ── CEK JIKA SUDAH LOGIN ────────────────────────────────────────
+  (function() {
+    const stored = sessionStorage.getItem("sipilah_user");
+    if (!stored) return;
+    try {
+      const u = JSON.parse(stored);
+      redirectByRole(u.role);
+    } catch {}
+  })();
+
+  function redirectByRole(role) {
+    if (role === "ADMIN")    { window.location.replace("/admin");    return true; }
+    if (role === "PETUGAS")  { window.location.replace("/petugas");  return true; }
+    if (role === "PENGGUNA") { window.location.replace("/pengguna"); return true; }
+    return false;
+  }
+
+  // ── TOGGLE PASSWORD VISIBILITY ────────────────────────────────
+  function togglePass() {
+    const input = document.getElementById("password");
+    const icon  = document.getElementById("pass-icon");
+    const isPass = input.type === "password";
+    input.type = isPass ? "text" : "password";
+    icon.className = isPass ? "fas fa-eye-slash" : "fas fa-eye";
+  }
+
+  // ── SET UI STATE ──────────────────────────────────────────────
+  function setLoading(on) {
+    const btn  = document.getElementById("btn-login");
+    const text = document.getElementById("btn-text");
+    btn.disabled = on;
+    if (on) {
+      btn.innerHTML = `<span class="spinner"></span><span>Memverifikasi...</span>`;
+    } else {
+      btn.innerHTML = `<i class="fas fa-sign-in-alt"></i><span>Masuk</span>`;
+    }
+  }
+
+  function showError(msg) {
+    document.getElementById("err-msg").innerHTML = msg;
+    document.getElementById("err-box").classList.add("show");
+  }
+
+  function hideError() {
+    document.getElementById("err-box").classList.remove("show");
+  }
+
+  // ── MAIN LOGIN FUNCTION ────────────────────────────────────────
+  async function doLogin() {
+    const email    = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    hideError();
+
+    if (!email || !password) {
+      showError("Email dan password wajib diisi.");
+      document.getElementById(!email ? "email" : "password").focus();
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method : "POST",
+        headers: { "Content-Type": "application/json" },
+        body   : JSON.stringify({ email, password })
+      });
+
+      if (!response.ok) {
+        const status = response.status;
+        if (status === 404) {
+          showError(
+            "Email belum terdaftar. Hubungi admin melalui " +
+            "<a href='https://wa.me/6283863435413' target='_blank' class='wa-link'>" +
+            "<i class='fab fa-whatsapp me-1'></i>WhatsApp</a>"
+          );
+        } else if (status === 400 || status === 401) {
+          showError("Password salah. Silakan coba lagi.");
+          document.getElementById("password").value = "";
+          document.getElementById("password").focus();
+        } else {
+          const msg = await response.text().catch(() => "");
+          showError(msg || "Login gagal. Coba beberapa saat lagi.");
+        }
+        setLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+
+      // ── SIMPAN SESSION ─────────────────────────────────────────
+      const userData = {
+        nama         : data.nama         || data.name        || "",
+        email        : data.email        || email,
+        role         : data.role         || "",
+        alamat       : data.alamat       || "",
+        rtRw         : data.rtRw         || data.rt_rw       || "",
+        noTelepon    : data.noTelepon    || data.no_telepon  || "",
+        nomorInduk   : data.nomorInduk   || "",
+        wilayahTugas : data.wilayahTugas || "",
+      };
+
+      sessionStorage.setItem("sipilah_user", JSON.stringify(userData));
+
+      // ── REDIRECT SESUAI ROLE ───────────────────────────────────
+      if (!redirectByRole(userData.role)) {
+        showError(`Role tidak dikenali: <strong>${userData.role || "(kosong)"}</strong>. Hubungi admin.`);
+        setLoading(false);
+      }
+
+    } catch (err) {
+      console.error(err);
+      showError("Tidak dapat terhubung ke server. Periksa koneksi Anda.");
+      setLoading(false);
+    }
+  }
+</script>
 </body>
 </html>

@@ -1,295 +1,1065 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SIPILAH — Dashboard Warga</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --hijau: #2d9e5f;
-        --hijau-muda: #e8f7ef;
-        --hijau-tua: #1a6b3f;
-        --kuning: #f5c842;
-        --bg: #f4faf7;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIPILAH — Dashboard Warga</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --hijau: #2d9e5f;
+      --hijau-muda: #e8f7ef;
+      --hijau-tua: #1a6b3f;
+      --kuning: #f5c842;
+      --oranye: #f07d3a;
+      --merah: #e74c3c;
+      --biru: #1565c0;
+      --bg: #f4faf7;
+      --sidebar-w: 260px;
+      --radius: 18px;
+      --shadow: 0 2px 16px rgba(0,0,0,0.06);
+      --border: 1.5px solid #f0f0f0;
+    }
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Nunito", sans-serif; background: var(--bg); color: #222; }
 
-      body {
-        font-family: "Nunito", sans-serif;
-        background: var(--bg);
-        color: #222;
-        display: flex;
-        min-height: 100vh;
-      }
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-height: 100vh;
+      background: var(--hijau-tua);
+      position: fixed; left: 0; top: 0;
+      display: flex; flex-direction: column;
+      box-shadow: 4px 0 28px rgba(0,0,0,0.13);
+      z-index: 200;
+      transition: width 0.3s ease;
+    }
 
-      /* SIDEBAR */
-      .sidebar {
-        width: 260px;
-        background: linear-gradient(180deg, var(--hijau-tua) 0%, var(--hijau) 100%);
-        color: white;
-        position: fixed;
-        height: 100vh;
-        z-index: 1000;
-        transition: all 0.3s;
-      }
+    .sidebar-brand {
+      padding: 26px 22px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
 
-      .sidebar-brand {
-        font-family: "Fredoka One", cursive;
-        font-size: 1.8rem;
-        padding: 30px 20px;
-        text-align: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
+    .sidebar-brand .logo {
+      font-family: "Fredoka One", cursive;
+      font-size: 1.85rem; color: white;
+      display: flex; align-items: center; gap: 9px;
+      text-decoration: none;
+    }
 
-      .nav-menu {
-        padding: 20px 0;
-      }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 11px;
+      background: linear-gradient(135deg,#3fa66b,#6dd08a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(63,166,107,.4);
+    }
 
-      .nav-item-custom {
-        padding: 12px 25px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: rgba(255, 255, 255, 0.8);
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.2s;
-      }
+    .sidebar-brand .role-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 10px;
+      background: var(--kuning); color: #1a3a20;
+      font-size: 0.7rem; font-weight: 800;
+      padding: 4px 13px; border-radius: 20px;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
 
-      .nav-item-custom:hover, .nav-item-custom.active {
-        background: rgba(255, 255, 255, 0.15);
-        color: white;
-        border-left: 4px solid var(--kuning);
-      }
+    .sidebar nav { padding: 14px 0; flex: 1; overflow-y: auto; }
 
-      /* MAIN CONTENT */
-      .main-content {
-        flex: 1;
-        margin-left: 260px;
-        padding: 30px;
-      }
+    .sidebar nav a {
+      display: flex; align-items: center; gap: 11px;
+      color: rgba(255,255,255,0.68);
+      text-decoration: none; padding: 11px 22px;
+      font-weight: 600; font-size: 0.88rem;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
 
-      .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 40px;
-      }
+    .sidebar nav a i { width: 17px; text-align: center; font-size: 0.88rem; flex-shrink: 0; }
+    .sidebar nav a:hover { color: white; background: rgba(255,255,255,0.08); }
+    .sidebar nav a.active {
+      color: white;
+      background: rgba(255,255,255,0.13);
+      border-left-color: var(--kuning);
+    }
 
-      .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        background: white;
-        padding: 8px 20px;
-        border-radius: 50px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      }
+    .nav-section {
+      padding: 14px 22px 5px;
+      font-size: 0.67rem; font-weight: 800;
+      letter-spacing: 1.6px; text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+    }
 
-      .user-name {
-        font-weight: 700;
-        color: var(--hijau-tua);
-      }
+    .sidebar-footer {
+      padding: 16px 22px;
+      border-top: 1px solid rgba(255,255,255,0.09);
+    }
 
-      /* CARDS */
-      .card-custom {
-        background: white;
-        border: none;
-        border-radius: 20px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-        padding: 25px;
-        height: 100%;
-        transition: transform 0.2s;
-      }
+    .sidebar-footer a {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(255,255,255,0.48); text-decoration: none;
+      font-size: 0.84rem; font-weight: 600;
+      transition: color 0.2s; cursor: pointer;
+    }
 
-      .card-custom:hover {
-        transform: translateY(-5px);
-      }
+    .sidebar-footer a:hover { color: #ff8a80; }
 
-      .card-title-custom {
-        font-family: "Fredoka One", cursive;
-        color: var(--hijau-tua);
-        margin-bottom: 20px;
-        font-size: 1.3rem;
-      }
+    /* ── MAIN ── */
+    .main { margin-left: var(--sidebar-w); padding: 30px 34px; min-height: 100vh; }
 
-      .stat-number {
-        font-family: "Fredoka One", cursive;
-        font-size: 2.5rem;
-        color: var(--hijau);
-      }
+    /* ── TOPBAR ── */
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 26px;
+    }
 
-      /* BUTTONS */
-      .btn-jemput {
-        background: var(--kuning);
-        color: #1a1a1a;
-        border: none;
-        border-radius: 12px;
-        padding: 15px 25px;
-        font-weight: 800;
-        font-family: "Fredoka One", cursive;
-        width: 100%;
-        transition: all 0.2s;
-        box-shadow: 0 4px 15px rgba(245, 200, 66, 0.3);
-      }
+    .topbar-left h1 {
+      font-family: "Fredoka One", cursive;
+      font-size: 1.85rem; color: var(--hijau-tua); margin: 0; line-height: 1.1;
+    }
 
-      .btn-jemput:hover {
-        background: #e6b800;
-        transform: scale(1.02);
-      }
+    .topbar-left p { font-size: 0.83rem; color: #7a9a88; margin: 3px 0 0; }
 
-      .btn-logout {
-        color: #ff4d4d;
-        text-decoration: none;
-        font-weight: 700;
-        margin-top: auto;
-        padding: 20px 25px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+    .user-chip {
+      display: flex; align-items: center; gap: 10px;
+      background: white; border: var(--border);
+      padding: 8px 16px; border-radius: 14px;
+      font-size: 0.84rem; font-weight: 700;
+      box-shadow: var(--shadow);
+    }
 
-      /* TABLE CUSTOM */
-      .table-custom {
-        border-radius: 15px;
-        overflow: hidden;
-      }
+    .user-chip .avatar {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg,var(--hijau-muda),#c8f0d8);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem;
+    }
 
-      .table-custom thead {
-        background: var(--hijau-muda);
-        color: var(--hijau-tua);
-      }
+    /* ── WELCOME CARD ── */
+    .welcome-card {
+      background: linear-gradient(135deg, var(--hijau-tua) 0%, #2d8a5a 55%, #3fa66b 100%);
+      border-radius: 22px; padding: 26px 30px;
+      color: white; margin-bottom: 22px;
+      position: relative; overflow: hidden;
+    }
 
-      /* ANIMATIONS */
-      @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .fade-up { animation: fadeUp 0.6s ease both; }
-    </style>
-  </head>
-  <body>
-    <div class="sidebar d-flex flex-column">
-      <div class="sidebar-brand">🌿 SIPILAH</div>
-      <nav class="nav-menu flex-grow-1">
-        <a href="#" class="nav-item-custom active">
-          <i class="fas fa-home"></i> Dashboard
-        </a>
-        <a href="#" class="nav-item-custom">
-          <i class="fas fa-history"></i> Riwayat Setoran
-        </a>
-        <a href="#" class="nav-item-custom">
-          <i class="fas fa-map-marker-alt"></i> Lokasi TPS
-        </a>
-        <a href="#" class="nav-item-custom">
-          <i class="fas fa-user-cog"></i> Pengaturan Akun
-        </a>
-      </nav>
-      <a href="index.html" class="btn-logout">
-        <i class="fas fa-sign-out-alt"></i> Keluar Sistem
-      </a>
+    .welcome-card::before {
+      content: '';
+      position: absolute; right: -40px; top: -40px;
+      width: 190px; height: 190px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .welcome-card::after {
+      content: '';
+      position: absolute; right: 60px; bottom: -50px;
+      width: 130px; height: 130px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .welcome-card h2 {
+      font-family: "Fredoka One", cursive;
+      font-size: 1.75rem; margin-bottom: 4px; position: relative;
+    }
+
+    .welcome-card p { opacity: 0.75; font-size: 0.88rem; position: relative; }
+
+    /* ── STAT CARDS ── */
+    .stat-card {
+      background: white; border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow); border: var(--border);
+      display: flex; align-items: center; gap: 16px;
+      transition: all 0.25s; height: 100%;
+    }
+
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+    .stat-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; flex-shrink: 0;
+    }
+
+    .stat-info h3 {
+      font-family: "Fredoka One", cursive;
+      font-size: 2rem; margin: 0; line-height: 1;
+    }
+
+    .stat-info p {
+      font-size: 0.74rem; color: #7a8c82;
+      font-weight: 700; margin: 4px 0 0;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* ── SECTION CARD ── */
+    .section-card {
+      background: white; border-radius: var(--radius);
+      box-shadow: var(--shadow); border: var(--border);
+      overflow: hidden; margin-bottom: 22px;
+    }
+
+    .section-header {
+      padding: 16px 22px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1.5px solid #f0f7f3;
+    }
+
+    .section-header h5 {
+      font-family: "Fredoka One", cursive;
+      font-size: 1.15rem; color: var(--hijau-tua); margin: 0;
+    }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; }
+
+    table thead th {
+      background: var(--hijau-muda); color: var(--hijau-tua);
+      font-weight: 800; font-size: 0.73rem;
+      padding: 11px 16px; text-transform: uppercase;
+      letter-spacing: 0.5px; border: none;
+    }
+
+    table tbody td {
+      padding: 12px 16px; font-size: 0.86rem;
+      border-bottom: 1px solid #f4f9f6;
+      vertical-align: middle; color: #444;
+    }
+
+    table tbody tr:last-child td { border-bottom: none; }
+    table tbody tr:hover { background: #f9fcfa; }
+
+    /* ── BUTTONS ── */
+    .btn-aksi {
+      background: var(--kuning); color: #1a2f1f;
+      border: none; padding: 8px 18px;
+      border-radius: 10px; font-family: "Nunito", sans-serif;
+      font-weight: 700; font-size: 0.82rem;
+      cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    .btn-aksi:hover { background: #e6b800; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(245,200,66,0.35); }
+
+    .btn-save {
+      background: linear-gradient(135deg, var(--hijau-tua), var(--hijau));
+      color: white; border: none;
+      padding: 12px; border-radius: 12px;
+      font-family: "Nunito", sans-serif; font-weight: 800;
+      font-size: 0.92rem; width: 100%; cursor: pointer;
+      transition: all 0.2s; box-shadow: 0 4px 16px rgba(45,158,95,0.2);
+    }
+
+    .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,158,95,0.32); }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      color: white; border: none;
+      padding: 12px; border-radius: 12px;
+      font-family: "Nunito", sans-serif; font-weight: 800;
+      font-size: 0.92rem; width: 100%; cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(231,76,60,0.28); }
+
+    /* ── TAGS ── */
+    .tag {
+      display: inline-block; padding: 3px 11px;
+      border-radius: 20px; font-size: 0.72rem; font-weight: 700;
+    }
+
+    .tag-green  { background: var(--hijau-muda); color: var(--hijau-tua); }
+    .tag-orange { background: #fff3e0; color: #b85c1a; }
+    .tag-blue   { background: #e3f2fd; color: #1565c0; }
+    .tag-red    { background: #fdeaea; color: #9b3a2a; }
+    .tag-yellow { background: #fffde7; color: #8a6d00; }
+
+    /* ── FORM ── */
+    .form-label {
+      font-weight: 700; font-size: 0.8rem;
+      color: var(--hijau-tua); text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 5px; display: block;
+    }
+
+    .form-control, .form-select {
+      border-radius: 11px; border: 1.5px solid #dde8e2;
+      padding: 10px 13px; font-family: "Nunito", sans-serif;
+      font-size: 0.88rem; background: #fafdfc; width: 100%;
+      transition: all 0.2s;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--hijau);
+      box-shadow: 0 0 0 3px rgba(45,158,95,0.1);
+      background: white; outline: none;
+    }
+
+    /* ── POIN DISPLAY ── */
+    .poin-big {
+      font-family: "Fredoka One", cursive;
+      font-size: 4rem; color: var(--kuning);
+      line-height: 1; text-shadow: 0 4px 18px rgba(245,200,66,0.3);
+    }
+
+    .poin-card-inner {
+      text-align: center; padding: 32px 20px;
+    }
+
+    /* ── MAP PLACEHOLDER ── */
+    .map-placeholder {
+      height: 360px;
+      background: linear-gradient(135deg, #e8f7ef, #f4faf7);
+      border-radius: 14px; display: flex;
+      flex-direction: column; align-items: center;
+      justify-content: center; color: var(--hijau-tua);
+      border: 2px dashed #b2dfce;
+    }
+
+    .map-placeholder i { font-size: 2.8rem; opacity: 0.25; margin-bottom: 12px; }
+
+    /* ── TOAST ── */
+    .toast-box { position: fixed; top: 22px; right: 22px; z-index: 9999; min-width: 270px; }
+
+    .toast-item {
+      background: white; border-radius: 13px;
+      padding: 13px 17px;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.13);
+      border-left: 4px solid var(--hijau);
+      font-size: 0.86rem; font-weight: 600;
+      margin-bottom: 9px;
+      animation: slideIn 0.3s ease;
+      display: flex; align-items: center; gap: 9px;
+    }
+
+    .toast-item.error   { border-left-color: var(--merah); }
+    .toast-item.warning { border-left-color: var(--kuning); }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(44px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { text-align: center; padding: 44px 20px; color: #b0bfb5; }
+    .empty-state i { font-size: 2.2rem; margin-bottom: 11px; display: block; opacity: 0.3; }
+    .empty-state p { font-size: 0.86rem; font-weight: 600; }
+
+    /* ── GPS BUTTON ── */
+    .btn-gps {
+      background: var(--hijau-muda); color: var(--hijau-tua);
+      border: 1.5px solid #b2dfce;
+      padding: 10px 14px; border-radius: 11px;
+      font-size: 0.88rem; cursor: pointer;
+      transition: all 0.2s; white-space: nowrap;
+    }
+
+    .btn-gps:hover { background: var(--hijau); color: white; border-color: var(--hijau); }
+
+    /* ── TPS LIST ── */
+    .tps-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid #f0f7f3;
+      transition: background 0.15s;
+    }
+
+    .tps-item:last-child { border-bottom: none; }
+    .tps-item:hover { background: #f9fdfa; }
+
+    .tps-item-name { font-weight: 700; font-size: 0.88rem; color: var(--hijau-tua); }
+    .tps-item-addr { font-size: 0.78rem; color: #8aaa94; margin-top: 2px; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up { animation: fadeUp 0.4s ease both; }
+    .d1 { animation-delay: 0.07s; }
+    .d2 { animation-delay: 0.14s; }
+    .d3 { animation-delay: 0.21s; }
+
+    /* ── DIVIDER ── */
+    .form-divider {
+      border: none; border-top: 1.5px solid #eaf3ed;
+      margin: 18px 0;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      :root { --sidebar-w: 68px; }
+
+      .sidebar nav a span,
+      .sidebar-brand .logo span,
+      .sidebar-brand .role-tag,
+      .nav-section,
+      .sidebar-footer a span { display: none; }
+
+      .sidebar nav a { justify-content: center; padding: 14px; }
+      .sidebar nav a i { width: auto; font-size: 1.05rem; }
+      .sidebar-brand { padding: 18px 10px; justify-content: center; display: flex; }
+      .main { padding: 20px 14px; }
+      .topbar { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="toast-box" id="toastBox"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <a href="/" class="logo">
+      <div class="logo-icon">🌿</div>
+      <span>SIPILAH</span>
+    </a>
+    <div>
+      <span class="role-tag"><i class="fas fa-home me-1"></i> Warga</span>
+    </div>
+  </div>
+
+  <nav>
+    <div class="nav-section">Menu</div>
+    <a href="#" class="active" onclick="showSection('dashboard', this, '🏠 Dashboard')">
+      <i class="fas fa-home"></i> <span>Dashboard</span>
+    </a>
+
+    <div class="nav-section">Aktivitas</div>
+    <a href="#" onclick="showSection('riwayat', this, '♻️ Riwayat Setoran')">
+      <i class="fas fa-history"></i> <span>Riwayat Setoran</span>
+    </a>
+    <a href="#" onclick="showSection('poin', this, '⭐ Poin Saya')">
+      <i class="fas fa-star"></i> <span>Poin Saya</span>
+    </a>
+    <a href="#" onclick="showSection('jemput', this, '🚛 Request Jemputan')">
+      <i class="fas fa-truck"></i> <span>Request Jemputan</span>
+    </a>
+
+    <div class="nav-section">Info</div>
+    <a href="#" onclick="showSection('tps', this, '📍 Lokasi TPS')">
+      <i class="fas fa-map-marker-alt"></i> <span>Lokasi TPS</span>
+    </a>
+
+    <div class="nav-section">Akun</div>
+    <a href="#" onclick="showSection('pengaturan', this, '⚙️ Pengaturan Akun')">
+      <i class="fas fa-user-cog"></i> <span>Pengaturan Akun</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Keluar</span>
+    </a>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 id="page-title">🏠 Dashboard</h1>
+      <p id="page-sub">Selamat datang kembali!</p>
+    </div>
+    <div class="user-chip">
+      <div class="avatar">🌿</div>
+      <span id="user-nama">Memuat...</span>
+    </div>
+  </div>
+
+  <!-- ── DASHBOARD ── -->
+  <div id="section-dashboard">
+    <div class="welcome-card fade-up">
+      <h2 id="greeting-text">Halo! 👋</h2>
+      <p>Terima kasih sudah peduli lingkungan. Mari terus pilah sampah bersama!</p>
     </div>
 
-    <div class="main-content">
-      <div class="topbar fade-up">
-        <h2 style="font-family: 'Fredoka One', cursive; color: var(--hijau-tua)">
-          Halo, Warga Hebat! 👋
-        </h2>
-        <div class="user-profile">
-          <i class="fas fa-user-circle fa-lg text-success"></i>
-          <span class="user-name" id="display-nama">Memuat...</span>
+    <div class="row g-3 mb-4">
+      <div class="col-md-4 fade-up d1">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--hijau-muda);color:var(--hijau-tua);">
+            <i class="fas fa-weight"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="stat-berat" style="color:var(--hijau-tua);">—</h3>
+            <p>Total Setoran (kg)</p>
+          </div>
         </div>
       </div>
+      <div class="col-md-4 fade-up d2">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fffde7;color:#8a6d00;">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="stat-poin" style="color:#8a6d00;">—</h3>
+            <p>Poin Lingkungan</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 fade-up d3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#e3f2fd;color:#1565c0;">
+            <i class="fas fa-recycle"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="stat-jumlah" style="color:#1565c0;">—</h3>
+            <p>Jumlah Setoran</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <div class="row g-4 mb-5 fade-up" style="animation-delay: 0.1s">
-        <div class="col-md-4">
-          <div class="card-custom text-center">
-            <p class="text-muted fw-bold mb-1">Total Setoran</p>
-            <div class="stat-number">24 <small style="font-size: 1rem">kg</small></div>
-            <p class="mb-0 text-success"><i class="fas fa-arrow-up"></i> +2kg minggu ini</p>
+    <div class="section-card fade-up">
+      <div class="section-header">
+        <h5><i class="fas fa-clock me-2"></i> Aktivitas Terakhir</h5>
+        <button class="btn-aksi" onclick="goSection('riwayat','♻️ Riwayat Setoran')">
+          <i class="fas fa-arrow-right"></i> Lihat Semua
+        </button>
+      </div>
+      <div class="p-2">
+        <table>
+          <thead>
+            <tr><th>Tanggal</th><th>Jenis Sampah</th><th>Berat</th><th>Poin</th><th>Status</th></tr>
+          </thead>
+          <tbody id="tabel-preview"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIWAYAT ── -->
+  <div id="section-riwayat" style="display:none;">
+    <div class="section-card fade-up">
+      <div class="section-header">
+        <h5><i class="fas fa-history me-2"></i> Semua Riwayat Setoran</h5>
+      </div>
+      <div class="p-2">
+        <table>
+          <thead>
+            <tr><th>Tanggal</th><th>Jenis Sampah</th><th>Kategori</th><th>Berat (kg)</th><th>Poin</th><th>Status</th></tr>
+          </thead>
+          <tbody id="tabel-riwayat"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── POIN ── -->
+  <div id="section-poin" style="display:none;">
+    <div class="row g-4 fade-up">
+      <div class="col-md-5">
+        <div class="section-card h-100">
+          <div class="section-header"><h5><i class="fas fa-star me-2"></i> Total Poin Saya</h5></div>
+          <div class="poin-card-inner">
+            <div class="poin-big" id="poin-display">—</div>
+            <p class="mt-2 fw-bold" style="color:#7a8c82;font-size:0.85rem;">Poin Lingkungan Anda</p>
+            <div style="background:var(--hijau-muda);border-radius:12px;padding:14px 18px;margin-top:18px;text-align:left;">
+              <p style="font-size:0.8rem;color:var(--hijau-tua);font-weight:700;margin:0;">
+                <i class="fas fa-info-circle me-2"></i>
+                Kumpulkan poin dari setiap setoran sampah dan tukarkan dengan hadiah menarik melalui admin SIPILAH!
+              </p>
+            </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card-custom text-center">
-            <p class="text-muted fw-bold mb-1">Poin Lingkungan</p>
-            <div class="stat-number" style="color: var(--kuning)">1.250</div>
-            <p class="mb-0 text-muted">Tukar dengan merchandise</p>
+      </div>
+      <div class="col-md-7">
+        <div class="section-card">
+          <div class="section-header"><h5><i class="fas fa-history me-2"></i> Riwayat Poin</h5></div>
+          <div class="p-2">
+            <table>
+              <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Poin</th></tr></thead>
+              <tbody id="tabel-poin"></tbody>
+            </table>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card-custom d-flex align-items-center justify-content-center">
-            <button class="btn-jemput" onclick="requestJemput()">
-              <i class="fas fa-truck-moving me-2"></i> REQUEST JEMPUT
+      </div>
+    </div>
+  </div>
+
+  <!-- ── JEMPUT ── -->
+  <div id="section-jemput" style="display:none;">
+    <div class="row g-4 fade-up">
+      <div class="col-md-5">
+        <div class="section-card">
+          <div class="section-header"><h5><i class="fas fa-truck me-2"></i> Buat Request Jemputan</h5></div>
+          <div class="p-4">
+            <div class="mb-3">
+              <label class="form-label">Catatan untuk Petugas</label>
+              <textarea id="catatan-jemput" class="form-control" rows="3"
+                placeholder="Contoh: sampah ada 2 kantong di depan pintu..."></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Lokasi Penjemputan</label>
+              <div class="d-flex gap-2">
+                <input type="text" id="lokasi-manual" class="form-control"
+                  placeholder="Ketik alamat atau klik GPS..." />
+                <button class="btn-gps" onclick="getLocation()" title="Gunakan GPS Otomatis">
+                  <i class="fas fa-map-marker-alt"></i>
+                </button>
+              </div>
+              <small class="mt-1 d-block" id="lokasi-status"
+                style="font-size:0.76rem;color:#8aaa94;">
+                Klik ikon 📍 untuk lokasi GPS otomatis
+              </small>
+            </div>
+            <button class="btn-save" onclick="requestJemput()">
+              <i class="fas fa-paper-plane me-2"></i> Kirim Request
             </button>
           </div>
         </div>
       </div>
 
-      <div class="row fade-up" style="animation-delay: 0.2s">
-        <div class="col-12">
-          <div class="card-custom">
-            <h5 class="card-title-custom">
-              <i class="fas fa-clock me-2"></i>Riwayat Aktivitas Terakhir
-            </h5>
-            <div class="table-responsive">
-              <table class="table table-hover table-custom">
-                <thead>
-                  <tr>
-                    <th>Tanggal</th>
-                    <th>Jenis Sampah</th>
-                    <th>Berat</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="tabel-riwayat">
-                  <tr>
-                    <td>12 Mei 2026</td>
-                    <td><span class="badge bg-success">Organik</span></td>
-                    <td>5.5 kg</td>
-                    <td><span class="badge rounded-pill bg-info text-dark">Selesai</span></td>
-                  </tr>
-                  <tr>
-                    <td>10 Mei 2026</td>
-                    <td><span class="badge bg-primary">Anorganik</span></td>
-                    <td>3.0 kg</td>
-                    <td><span class="badge rounded-pill bg-info text-dark">Selesai</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+      <div class="col-md-7">
+        <div class="section-card">
+          <div class="section-header"><h5><i class="fas fa-list me-2"></i> Riwayat Request Saya</h5></div>
+          <div class="p-2">
+            <table>
+              <thead><tr><th>Tanggal</th><th>Catatan</th><th>Status</th><th>Petugas</th></tr></thead>
+              <tbody id="tabel-jemput"></tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // Simulasi pengambilan data session (Contoh jika kamu menyimpan nama di localStorage saat login)
-      document.addEventListener('DOMContentLoaded', () => {
-          // Ganti dengan logic real dari backend nantinya
-          document.getElementById('display-nama').innerText = "Bpk. Budi Santoso";
-      });
+  <!-- ── TPS ── -->
+  <div id="section-tps" style="display:none;">
+    <div class="section-card fade-up">
+      <div class="section-header">
+        <h5><i class="fas fa-map-marker-alt me-2"></i> Lokasi TPS Terdekat</h5>
+      </div>
+      <div class="p-3">
+        <div class="map-placeholder mb-4">
+          <i class="fas fa-map"></i>
+          <p class="fw-bold">Peta interaktif akan tampil di sini</p>
+          <small style="color:#8aaa94;">Integrasi Google Maps / Leaflet</small>
+        </div>
+        <h6 class="fw-bold mb-3" style="color:var(--hijau-tua);font-size:0.9rem;">
+          <i class="fas fa-recycle me-2"></i> TPS Binaan SIPILAH
+        </h6>
+        <div id="tps-list">
+          <div class="tps-item" style="color:#b0bfb5;justify-content:center;">
+            <span><i class="fas fa-circle-notch fa-spin me-2"></i>Memuat data TPS...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      function requestJemput() {
-        alert("Permintaan penjemputan berhasil dikirim! Petugas akan segera menuju lokasi Anda berdasarkan GPS.");
+  <!-- ── PENGATURAN ── -->
+  <div id="section-pengaturan" style="display:none;">
+    <div class="row g-4 fade-up">
+      <div class="col-md-6">
+        <div class="section-card">
+          <div class="section-header"><h5><i class="fas fa-user-edit me-2"></i> Edit Profil</h5></div>
+          <div class="p-4">
+            <div class="mb-3">
+              <label class="form-label">Nama Lengkap</label>
+              <input type="text" id="edit-nama" class="form-control" placeholder="Nama lengkap Anda" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">No. Telepon</label>
+              <input type="text" id="edit-telp" class="form-control" placeholder="08xxxxxxxxxx" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Alamat</label>
+              <textarea id="edit-alamat" class="form-control" rows="2" placeholder="Jl. ..."></textarea>
+            </div>
+            <div class="mb-4">
+              <label class="form-label">RT/RW</label>
+              <input type="text" id="edit-rtrw" class="form-control" placeholder="001/002" />
+            </div>
+            <button class="btn-save" onclick="simpanProfil()">
+              <i class="fas fa-save me-2"></i> Simpan Perubahan
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="section-card">
+          <div class="section-header"><h5><i class="fas fa-lock me-2"></i> Ganti Password</h5></div>
+          <div class="p-4">
+            <div class="mb-3">
+              <label class="form-label">Password Lama</label>
+              <input type="password" id="old-password" class="form-control" placeholder="Password saat ini" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password Baru</label>
+              <input type="password" id="new-password" class="form-control" placeholder="Password baru" />
+            </div>
+            <div class="mb-4">
+              <label class="form-label">Konfirmasi Password Baru</label>
+              <input type="password" id="confirm-password" class="form-control" placeholder="Ulangi password baru" />
+            </div>
+            <button class="btn-danger" onclick="gantiPassword()">
+              <i class="fas fa-key me-2"></i> Ganti Password
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ── GUARD SESSION ─────────────────────────────────────────────
+  const _stored = sessionStorage.getItem("sipilah_user");
+  if (!_stored) { window.location.replace("/"); }
+
+  let currentUser = null;
+  try {
+    currentUser = JSON.parse(_stored);
+  } catch {
+    sessionStorage.removeItem("sipilah_user");
+    window.location.replace("/");
+  }
+
+  if (currentUser.role === "ADMIN")   window.location.replace("/admin");
+  if (currentUser.role === "PETUGAS") window.location.replace("/petugas");
+  if (currentUser.role !== "PENGGUNA") window.location.replace("/");
+
+  // ── INIT ──────────────────────────────────────────────────────
+  const API = "";
+  let gpsLat = null, gpsLng = null;
+  const allSections = ["dashboard","riwayat","poin","jemput","tps","pengaturan"];
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const nama = currentUser.nama || "Warga";
+    document.getElementById("user-nama").textContent     = nama;
+    document.getElementById("greeting-text").textContent = `Halo, ${nama}! 👋`;
+    loadDashboard();
+  });
+
+  // ── NAVIGASI ──────────────────────────────────────────────────
+  function showSection(name, el, title) {
+    allSections.forEach(s => {
+      document.getElementById("section-" + s).style.display = "none";
+    });
+    document.querySelectorAll(".sidebar nav a").forEach(a => a.classList.remove("active"));
+    document.getElementById("section-" + name).style.display = "block";
+    if (el) el.classList.add("active");
+    document.getElementById("page-title").textContent = title || name;
+    document.getElementById("page-sub").textContent = pageSubtitle(name);
+
+    const loaders = {
+      dashboard : loadDashboard,
+      riwayat   : loadRiwayat,
+      poin      : loadPoin,
+      jemput    : loadRiwayatJemput,
+      tps       : loadTps,
+      pengaturan: loadFormPengaturan
+    };
+    if (loaders[name]) loaders[name]();
+  }
+
+  function pageSubtitle(name) {
+    const map = {
+      dashboard : "Ringkasan aktivitas Anda",
+      riwayat   : "Semua catatan setoran sampah",
+      poin      : "Poin lingkungan yang terkumpul",
+      jemput    : "Request penjemputan sampah",
+      tps       : "Tempat penampungan sampah terdekat",
+      pengaturan: "Kelola profil & keamanan akun",
+    };
+    return map[name] || "";
+  }
+
+  function goSection(name, title) {
+    const el = document.querySelector(`.sidebar nav a[onclick*="'${name}'"]`);
+    showSection(name, el, title);
+  }
+
+  // ── TOAST ─────────────────────────────────────────────────────
+  function toast(msg, type = "success") {
+    const icons = { success: "✅", error: "❌", warning: "⚠️" };
+    const el = document.createElement("div");
+    el.className = `toast-item${type !== "success" ? " " + type : ""}`;
+    el.innerHTML = `<span>${icons[type]}</span> ${msg}`;
+    document.getElementById("toastBox").appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+
+  // ── LOGOUT ────────────────────────────────────────────────────
+  function logout() {
+    if (!confirm("Yakin ingin keluar dari SIPILAH?")) return;
+    sessionStorage.removeItem("sipilah_user");
+    window.location.replace("/");
+  }
+
+  // ── UTILS ─────────────────────────────────────────────────────
+  function fmt(d) {
+    if (!d) return "—";
+    return new Date(d).toLocaleDateString("id-ID", {
+      day: "2-digit", month: "short", year: "numeric"
+    });
+  }
+
+  function statusTag(s) {
+    const m = {
+      MENUNGGU : "tag-orange",
+      DITERIMA : "tag-green",
+      SELESAI  : "tag-blue",
+      DITOLAK  : "tag-red"
+    };
+    return `<span class="tag ${m[s] || "tag-green"}">${s || "Selesai"}</span>`;
+  }
+
+  function emptyRow(colspan, icon, msg) {
+    return `<tr><td colspan="${colspan}">
+      <div class="empty-state"><i class="fas fa-${icon}"></i><p>${msg}</p></div>
+    </td></tr>`;
+  }
+
+  // ── DASHBOARD ─────────────────────────────────────────────────
+  async function loadDashboard() {
+    try {
+      const r = await fetch(`${API}/api/warga/statistik?email=${encodeURIComponent(currentUser.email)}`);
+      if (r.ok) {
+        const d = await r.json();
+        document.getElementById("stat-berat").textContent  = (d.totalBerat  || 0).toFixed(1);
+        document.getElementById("stat-poin").textContent   = d.totalPoin    || 0;
+        document.getElementById("stat-jumlah").textContent = d.jumlahSetoran || 0;
       }
-    </script>
-  </body>
+    } catch {}
+
+    try {
+      const r = await fetch(`${API}/api/warga/riwayat?email=${encodeURIComponent(currentUser.email)}&limit=5`);
+      const tbody = document.getElementById("tabel-preview");
+      if (r.ok) {
+        const data = await r.json();
+        tbody.innerHTML = data.length
+          ? data.map(t => `<tr>
+              <td>${fmt(t.tanggal)}</td>
+              <td>${t.jenisSampah || "—"}</td>
+              <td><span class="tag tag-green">${t.berat} kg</span></td>
+              <td><span class="tag tag-yellow">+${t.poin || 0}</span></td>
+              <td>${statusTag(t.status)}</td>
+            </tr>`).join("")
+          : emptyRow(5, "inbox", "Belum ada setoran");
+      } else throw 0;
+    } catch {
+      document.getElementById("tabel-preview").innerHTML = emptyRow(5, "inbox", "Gagal memuat data");
+    }
+  }
+
+  // ── RIWAYAT ───────────────────────────────────────────────────
+  async function loadRiwayat() {
+    const tbody = document.getElementById("tabel-riwayat");
+    try {
+      const r = await fetch(`${API}/api/warga/riwayat?email=${encodeURIComponent(currentUser.email)}&limit=100`);
+      if (r.ok) {
+        const data = await r.json();
+        tbody.innerHTML = data.length
+          ? data.map(t => `<tr>
+              <td>${fmt(t.tanggal)}</td>
+              <td>${t.jenisSampah || "—"}</td>
+              <td><span class="tag tag-blue">${t.kategori || "—"}</span></td>
+              <td><strong>${t.berat} kg</strong></td>
+              <td><span class="tag tag-yellow">+${t.poin || 0}</span></td>
+              <td>${statusTag(t.status)}</td>
+            </tr>`).join("")
+          : emptyRow(6, "history", "Belum ada riwayat setoran");
+      } else throw 0;
+    } catch {
+      tbody.innerHTML = emptyRow(6, "history", "Gagal memuat riwayat");
+    }
+  }
+
+  // ── POIN ──────────────────────────────────────────────────────
+  async function loadPoin() {
+    try {
+      const r = await fetch(`${API}/api/warga/statistik?email=${encodeURIComponent(currentUser.email)}`);
+      if (r.ok) {
+        const d = await r.json();
+        document.getElementById("poin-display").textContent = d.totalPoin || 0;
+      }
+    } catch {}
+
+    const tbody = document.getElementById("tabel-poin");
+    try {
+      const r = await fetch(`${API}/api/warga/riwayat?email=${encodeURIComponent(currentUser.email)}&limit=100`);
+      if (r.ok) {
+        const data = await r.json();
+        const filtered = data.filter(t => t.poin > 0);
+        tbody.innerHTML = filtered.length
+          ? filtered.map(t => `<tr>
+              <td>${fmt(t.tanggal)}</td>
+              <td>Setoran ${t.jenisSampah || "Sampah"} (${t.berat} kg)</td>
+              <td><span class="tag tag-yellow">+${t.poin} poin</span></td>
+            </tr>`).join("")
+          : emptyRow(3, "star", "Belum ada riwayat poin");
+      } else throw 0;
+    } catch {
+      tbody.innerHTML = emptyRow(3, "star", "Gagal memuat data");
+    }
+  }
+
+  // ── GPS ───────────────────────────────────────────────────────
+  function getLocation() {
+    const status = document.getElementById("lokasi-status");
+    status.textContent = "⏳ Mengambil lokasi GPS...";
+    if (!navigator.geolocation) {
+      status.textContent = "❌ Browser tidak mendukung GPS.";
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        gpsLat = pos.coords.latitude;
+        gpsLng = pos.coords.longitude;
+        status.textContent = `✅ GPS: ${gpsLat.toFixed(5)}, ${gpsLng.toFixed(5)}`;
+        document.getElementById("lokasi-manual").value = "";
+      },
+      () => { status.textContent = "❌ Gagal ambil GPS. Ketik alamat manual."; }
+    );
+  }
+
+  // ── REQUEST JEMPUT ────────────────────────────────────────────
+  async function requestJemput() {
+    const catatan = document.getElementById("catatan-jemput").value;
+    const alamat  = document.getElementById("lokasi-manual").value;
+    if (!catatan && !alamat && !gpsLat) {
+      toast("Isi catatan atau lokasi terlebih dahulu!", "warning");
+      return;
+    }
+    try {
+      const r = await fetch(`${API}/api/transaksi/request-jemput`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: currentUser.email,
+          status: "MENUNGGU",
+          tanggal: new Date().toISOString(),
+          catatan,
+          alamatLengkap: alamat || null,
+          latitude : gpsLat,
+          longitude: gpsLng,
+        })
+      });
+      if (r.ok) {
+        toast("✅ Request jemputan berhasil dikirim!");
+        document.getElementById("catatan-jemput").value = "";
+        document.getElementById("lokasi-manual").value  = "";
+        document.getElementById("lokasi-status").textContent = "Klik ikon 📍 untuk lokasi GPS otomatis";
+        gpsLat = null; gpsLng = null;
+        loadRiwayatJemput();
+      } else {
+        const e = await r.text();
+        toast(`Gagal: ${e}`, "error");
+      }
+    } catch { toast("Tidak dapat terhubung ke server!", "error"); }
+  }
+
+  async function loadRiwayatJemput() {
+    const tbody = document.getElementById("tabel-jemput");
+    try {
+      const r = await fetch(`${API}/api/warga/request-jemput?email=${encodeURIComponent(currentUser.email)}`);
+      if (r.ok) {
+        const data = await r.json();
+        tbody.innerHTML = data.length
+          ? data.map(j => `<tr>
+              <td>${fmt(j.tanggal)}</td>
+              <td>${j.catatan || j.alamatLengkap || "—"}</td>
+              <td>${statusTag(j.status)}</td>
+              <td>${j.petugas?.nama || "—"}</td>
+            </tr>`).join("")
+          : emptyRow(4, "truck", "Belum ada request");
+      } else throw 0;
+    } catch {
+      tbody.innerHTML = emptyRow(4, "truck", "Gagal memuat data");
+    }
+  }
+
+  // ── TPS ───────────────────────────────────────────────────────
+  async function loadTps() {
+    const listEl = document.getElementById("tps-list");
+    try {
+      const r = await fetch(`${API}/api/tps`);
+      if (r.ok) {
+        const list = await r.json();
+        listEl.innerHTML = list.length
+          ? list.map(t => `
+              <div class="tps-item">
+                <div>
+                  <div class="tps-item-name"><i class="fas fa-map-marker-alt me-2" style="color:var(--hijau);"></i>${t.nama}</div>
+                  <div class="tps-item-addr">${t.alamat || "—"}</div>
+                </div>
+                <span class="tag tag-green">${t.jarak ? t.jarak + " km" : "Tersedia"}</span>
+              </div>`).join("")
+          : `<div class="tps-item" style="color:#b0bfb5;justify-content:center;"><span>Belum ada data TPS</span></div>`;
+      } else throw 0;
+    } catch {
+      listEl.innerHTML = `<div class="tps-item" style="color:var(--merah);justify-content:center;"><span>Gagal memuat data TPS</span></div>`;
+    }
+  }
+
+  // ── PENGATURAN ────────────────────────────────────────────────
+  function loadFormPengaturan() {
+    document.getElementById("edit-nama").value   = currentUser.nama      || "";
+    document.getElementById("edit-telp").value   = currentUser.noTelepon || "";
+    document.getElementById("edit-alamat").value = currentUser.alamat    || "";
+    document.getElementById("edit-rtrw").value   = currentUser.rtRw     || "";
+  }
+
+  async function simpanProfil() {
+    const updated = {
+      nama      : document.getElementById("edit-nama").value,
+      noTelepon : document.getElementById("edit-telp").value,
+      alamat    : document.getElementById("edit-alamat").value,
+      rtRw      : document.getElementById("edit-rtrw").value,
+    };
+    try {
+      const r = await fetch(`${API}/api/warga/update`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: currentUser.email, ...updated })
+      });
+      if (r.ok) {
+        currentUser = { ...currentUser, ...updated };
+        sessionStorage.setItem("sipilah_user", JSON.stringify(currentUser));
+        document.getElementById("user-nama").textContent     = currentUser.nama;
+        document.getElementById("greeting-text").textContent = `Halo, ${currentUser.nama}! 👋`;
+        toast("Profil berhasil diperbarui!");
+      } else toast("Gagal update profil", "error");
+    } catch { toast("Terjadi kesalahan", "error"); }
+  }
+
+  async function gantiPassword() {
+    const oldPass     = document.getElementById("old-password").value;
+    const newPass     = document.getElementById("new-password").value;
+    const confirmPass = document.getElementById("confirm-password").value;
+    if (!oldPass || !newPass) { toast("Semua field wajib diisi!", "warning"); return; }
+    if (newPass !== confirmPass) { toast("Password baru tidak cocok!", "error"); return; }
+    if (newPass.length < 6) { toast("Password minimal 6 karakter!", "warning"); return; }
+    try {
+      const r = await fetch(`${API}/api/warga/ganti-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: currentUser.email, oldPassword: oldPass, newPassword: newPass })
+      });
+      if (r.ok) {
+        toast("Password berhasil diubah!");
+        ["old-password","new-password","confirm-password"].forEach(id => {
+          document.getElementById(id).value = "";
+        });
+      } else {
+        const e = await r.text();
+        toast(e || "Gagal ganti password", "error");
+      }
+    } catch { toast("Server error", "error"); }
+  }
+</script>
+</body>
 </html>
