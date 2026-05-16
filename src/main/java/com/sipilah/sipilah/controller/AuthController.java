@@ -39,6 +39,7 @@ public class AuthController {
         }
 
         Map<String, String> response = new HashMap<>();
+        response.put("id", String.valueOf(pengguna.getId()));
         response.put("nama", pengguna.getNama());
         response.put("email", pengguna.getEmail());
         response.put("role", pengguna.getRole());
